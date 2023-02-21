@@ -1,24 +1,43 @@
-import { Controller, Get, HttpStatus, Post, Res } from "@nestjs/common";
-import { Response } from "express";
-import { AdminService } from "./admin.service";
+import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+import { Response } from 'express';
+import { AdminService } from './admin.service';
+import { CreateAdminDTO } from './dto';
 
-@Controller("admin")
+@Controller('admin')
 export class AdminController {
   constructor(private adminService: AdminService) {}
-  @Get("/")
+
+  @Post('/')
+  async createAdmin(@Res() res: Response, @Body() adminInfo: CreateAdminDTO) {
+    try {
+      const result = await this.adminService.createAdmin(adminInfo);
+      return res.status(HttpStatus.OK).json({
+        status: HttpStatus.OK,
+        data: result,
+        message: 'Success',
+      });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        status: HttpStatus.BAD_REQUEST,
+        message: 'Failure',
+      });
+    }
+  }
+
+  @Get('/')
   async getAdminlist(@Res() res: Response) {
     try {
       const result = await this.adminService.getAdminList();
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         data: result,
-        message: "Success",
+        message: 'Success',
       });
     } catch (error) {
       // 400 -> Client Fault
       return res.status(HttpStatus.BAD_REQUEST).json({
         status: HttpStatus.BAD_REQUEST,
-        message: "Failure",
+        message: 'Failure',
       });
     }
   }
