@@ -13,13 +13,14 @@ export class AdminService {
 
   async createAdmin(adminInfo: CreateAdminDTO) {
     try {
-      const check = await this.adminRepository.find({
-        where: { admin_id: adminInfo.admin_id },
-      });
+      console.log(adminInfo);
+      // const check = await this.adminRepository.find({
+      //   where: { user_email: adminInfo.user_email },
+      // });
 
-      if (check) {
-        throw new Error('Admin ID is invalid');
-      }
+      // if (check) {
+      //   throw new Error('Admin ID is invalid');
+      // }
 
       const result = await this.adminRepository.save(adminInfo);
       return result;
