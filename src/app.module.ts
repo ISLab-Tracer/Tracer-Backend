@@ -5,6 +5,7 @@ import { AdminController } from './admin/admin.controller';
 import { AdminModule } from './admin/admin.module';
 import { DbModule } from './db/db.module';
 import { DbService } from './db/db.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { DbService } from './db/db.service';
     }),
     AdminModule,
     DbModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
