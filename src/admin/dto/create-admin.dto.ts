@@ -3,13 +3,13 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class CreateAdminDTO {
   @IsString()
   @IsNotEmpty()
-  admin_id: string;
+  user_email: string;
 
   @IsString()
   @IsNotEmpty()
-  admin_nm: string;
+  user_password: string;
 
   @IsString()
   @IsNotEmpty()
-  admin_password: string;
+  user_nm: string;
 }

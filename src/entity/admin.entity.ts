@@ -3,19 +3,23 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 't_admin' })
+@Entity({ name: 't_user' })
 export class Admin {
-  @PrimaryColumn()
-  admin_id: string;
+  @PrimaryGeneratedColumn('uuid')
+  user_id: string;
 
   @Column()
-  admin_nm: string;
+  user_email: string;
 
   @Column()
-  admin_password: string;
+  user_nm: string;
+
+  @Column()
+  user_password: string;
 
   @CreateDateColumn()
   created_at: Date;

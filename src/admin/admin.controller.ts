@@ -1,5 +1,14 @@
-import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { Response } from 'express';
+import { JwtGuard } from 'src/auth/guard';
 import { AdminService } from './admin.service';
 import { CreateAdminDTO } from './dto';
 
@@ -17,6 +26,7 @@ export class AdminController {
         message: 'Success',
       });
     } catch (error) {
+      console.log(error);
       return res.status(HttpStatus.BAD_REQUEST).json({
         status: HttpStatus.BAD_REQUEST,
         message: 'Failure',
