@@ -1,3 +1,4 @@
+import { UpdateTeamDto } from './dto/update-team.dto';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { Team } from 'src/entity';
@@ -32,7 +33,45 @@ export class TeamService {
    * @returns
    */
   async getTeamList() {
-    const result = await this.teamRepository.find();
-    return result;
+    try {
+      const result = await this.teamRepository.find();
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
+   * 팀 정보 수정
+   * --
+   * @param teamInfo
+   * @returns
+   */
+  async updateTeam(teamInfo: UpdateTeamDto) {
+    try {
+      const { team_id, ...updateInfo } = teamInfo;
+
+      const result = await this.teamRepository.update({ team_id }, updateInfo);
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
+   * 팀 정보 삭제
+   * --
+   * @param team_id
+   * @returns
+   */
+  async deleteTeam(team_id: string) {
+    try {
+      await this.teamRepository.findOneOrFail({ where: { team_id } });
+
+      const result = await this.teamRepository.delete({ team_id });
+      return result;
+    } catch (e) {
+      throw e;
+    }
   }
 }

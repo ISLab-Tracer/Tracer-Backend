@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AdminController } from './admin/admin.controller';
-import { AdminModule } from './admin/admin.module';
 import { DbModule } from './db/db.module';
 import { DbService } from './db/db.service';
 import { AuthModule } from './auth/auth.module';
 import { TeamModule } from './team/team.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -16,10 +15,10 @@ import { TeamModule } from './team/team.module';
       useClass: DbService,
       inject: [DbService],
     }),
-    AdminModule,
     DbModule,
     AuthModule,
     TeamModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],
