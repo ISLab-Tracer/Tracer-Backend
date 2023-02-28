@@ -104,7 +104,7 @@ export class UserService {
    */
   async getUserInfo(user_id: string) {
     try {
-      const user = await this.userRepository.find({
+      const user = await this.userRepository.findOneOrFail({
         where: { user_id: user_id },
       });
       return user;
