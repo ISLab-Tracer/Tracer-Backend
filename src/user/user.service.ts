@@ -1,4 +1,4 @@
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateUserDto, UpdateUserPasswordDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
@@ -65,7 +65,7 @@ export class UserService {
    */
   async getUserTeamInfo(team_id: string) {
     try {
-      const result = await this.userRepository.find({ where : {team_id} })
+      const result = await this.userRepository.find({ where: { team_id } })
       return result;
     } catch (e) {
       throw e;
@@ -123,6 +123,30 @@ export class UserService {
         where: { user_id: user_id },
       });
       return user;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
+   * 유저 비밀번호 확인 및 수정
+   * --
+   * @param userInfo
+   */
+  async updateUserPassword(userInfo: UpdateUserPasswordDto) {
+    try {
+      const { user_id, ...updateInfo } = userInfo;
+      const targeUser = await this.userRepository.findOneOrFail({ where: { user_id } });
+      if (await argon.verify(targeUser.user_password, updateInfo.user_pre_password)) {
+        console.log("ccc");
+        const newPassword = await argon.hash(updateInfo.user_new_password);
+        const result = await this.userRepository.update(
+          { user_id },
+          { user_password: newPassword }
+        );
+        return result;
+      }
+      return null;
     } catch (e) {
       throw e;
     }

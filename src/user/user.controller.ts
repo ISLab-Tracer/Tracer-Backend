@@ -1,4 +1,4 @@
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateUserDto, UpdateUserPasswordDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 import {
@@ -108,6 +108,23 @@ export class UserController {
   async getUserInfo(@Res() res: Response, @Param('user_id') user_id: string) {
     try {
       const result = await this.userService.getUserInfo(user_id);
+      return res.status(HttpStatus.OK).json({
+        status: HttpStatus.OK,
+        message: 'success',
+        data: result,
+      });
+    } catch (e) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        status: HttpStatus.BAD_REQUEST,
+        message: e.message,
+      });
+    }
+  }
+  
+  @Put('password')
+  async updateUserPassword(@Res() res: Response, @Body() userInfo: UpdateUserPasswordDto) {
+    try {
+      const result = await this.userService.updateUserPassword(userInfo);
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',

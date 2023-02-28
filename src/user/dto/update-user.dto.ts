@@ -13,3 +13,17 @@ export class UpdateUserDto {
   @IsOptional()
   user_nm?: string;
 }
+
+export class UpdateUserPasswordDto {
+  @IsString()
+  @IsNotEmpty()
+  user_id: string;
+
+  @IsString()
+  @IsNotEmpty()
+  user_pre_password?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  user_new_password?: string;
+}
