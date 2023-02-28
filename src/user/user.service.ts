@@ -10,7 +10,7 @@ import * as argon from 'argon2';
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>
-  ) {}
+  ) { }
 
   /**
    * 유저 정보 생성
@@ -51,6 +51,21 @@ export class UserService {
   async getUserList() {
     try {
       const result = await this.userRepository.find();
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
+   * 팀별 유저 정보 조회
+   * --
+   * @param team_id 
+   * @returns 
+   */
+  async getUserTeamInfo(team_id: string) {
+    try {
+      const result = await this.userRepository.find({ where : {team_id} })
       return result;
     } catch (e) {
       throw e;
