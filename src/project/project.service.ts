@@ -65,7 +65,7 @@ export class ProjectService {
         try {
             await this.projectRepository.findOneOrFail({ where: { project_id } });
             const result = await this.projectRepository.delete({ project_id });
-
+            return result;
         } catch (e) {
             throw e;
         }
