@@ -96,4 +96,20 @@ export class UserService {
       throw e;
     }
   }
+
+  /**
+   * 유저 상세 정보 조회
+   * @param user_id
+   * @returns
+   */
+  async getUserInfo(user_id: string) {
+    try {
+      const user = await this.userRepository.find({
+        where: { user_id: user_id },
+      });
+      return user;
+    } catch (e) {
+      throw e;
+    }
+  }
 }

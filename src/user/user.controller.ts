@@ -85,4 +85,21 @@ export class UserController {
       });
     }
   }
+
+  @Get('/:user_id')
+  async getUserInfo(@Res() res: Response, @Param('user_id') user_id: string) {
+    try {
+      const result = await this.userService.getUserInfo(user_id);
+      return res.status(HttpStatus.OK).json({
+        status: HttpStatus.OK,
+        message: 'success',
+        data: result,
+      });
+    } catch (e) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        status: HttpStatus.BAD_REQUEST,
+        message: e.message,
+      });
+    }
+  }
 }
