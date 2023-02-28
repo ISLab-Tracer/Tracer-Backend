@@ -16,7 +16,7 @@ import { Response } from 'express';
 
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
 
   @Post('/')
   async createUser(@Res() res: Response, @Body() userInfo: CreateUserDto) {
@@ -39,6 +39,24 @@ export class UserController {
   async getUserList(@Res() res: Response) {
     try {
       const result = await this.userService.getUserList();
+      return res.status(HttpStatus.OK).json({
+        status: HttpStatus.OK,
+        message: 'success',
+        data: result,
+      });
+    } catch (e) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        status: HttpStatus.BAD_REQUEST,
+        message: e.message,
+      });
+    }
+  }
+
+  // 팀별 유저 정보 조회
+  @Get('team/:team_id')
+  async getUserTeamInfo(@Res() res: Response, @Param('team_id') team_id: string) {
+    try {
+      const result = await this.userService.getUserTeamInfo(team_id)
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',
