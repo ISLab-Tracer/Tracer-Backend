@@ -6,6 +6,7 @@ import { DbService } from './db/db.service';
 import { AuthModule } from './auth/auth.module';
 import { TeamModule } from './team/team.module';
 import { UserModule } from './user/user.module';
+import { ProjectModule } from './project/project.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { UserModule } from './user/user.module';
     AuthModule,
     TeamModule,
     UserModule,
+    ProjectModule,
   ],
   controllers: [],
   providers: [],
