@@ -1,6 +1,3 @@
-import { ChangePasswordDto } from './dto/change-password.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 import {
   Controller,
@@ -14,6 +11,7 @@ import {
   Param,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { ChangePasswordDto, CreateUserDto, UpdateUserDto } from './dto';
 
 @Controller('user')
 export class UserController {

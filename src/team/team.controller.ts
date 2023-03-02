@@ -1,4 +1,3 @@
-import { UpdateTeamDto } from './dto/update-team.dto';
 import {
   Body,
   Controller,
@@ -11,7 +10,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { CreateTeamDto } from './dto';
+import { CreateTeamDto, UpdateTeamDto } from './dto';
 import { TeamService } from './team.service';
 
 @Controller('team')

@@ -1,10 +1,8 @@
-import { ChangePasswordDto } from './dto/change-password.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { User } from 'src/entity';
 import { Repository } from 'typeorm';
+import { ChangePasswordDto, CreateUserDto, UpdateUserDto } from './dto';
 import * as argon from 'argon2';
 
 @Injectable()
