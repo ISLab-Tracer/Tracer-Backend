@@ -43,7 +43,10 @@ export class User {
   @UpdateDateColumn()
   modified_at: Date;
 
-  @ManyToOne(() => Team, (team) => team.team_id)
+  @ManyToOne(() => Team, (team) => team.team_id, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'team_id' })
   team: Team;
 }

@@ -28,7 +28,10 @@ export class Category {
   @Column()
   parent_id: string;
 
-  @ManyToOne(() => Category, (category) => category.parent_id)
+  @ManyToOne(() => Category, (category) => category.parent_id, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'parent_id' })
   category_parent: Category;
 }
