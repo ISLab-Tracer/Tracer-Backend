@@ -8,6 +8,7 @@ import { TeamModule } from './team/team.module';
 import { UserModule } from './user/user.module';
 import { CategoryModule } from './category/category.module';
 import { ProjectModule } from './project/project.module';
+import { LoginModule } from './login/login.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ProjectModule } from './project/project.module';
     UserModule,
     CategoryModule,
     ProjectModule,
+    LoginModule,
   ],
   controllers: [],
   providers: [],
