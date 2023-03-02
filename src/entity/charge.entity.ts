@@ -26,14 +26,12 @@ export class Charge {
   modified_at: Date;
 
   @ManyToOne(() => User, (user) => user.user_id, {
-    onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
   @ManyToOne(() => Equipment, (equipment) => equipment.equipment_id, {
-    onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'equipment_id' })
