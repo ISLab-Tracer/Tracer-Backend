@@ -19,6 +19,14 @@ export class CategoryService {
      */
     async createCategory(categoryInfo: CreateCategoryDto) {
         try {
+            const { category_id } = categoryInfo;
+            const check = await this.categoryRepository.findOne({
+                where: { category_id: category_id },
+            });
+            if (check) {
+                throw new Error('Category is Invalid');
+            }
+
             const result = await this.categoryRepository.save(categoryInfo);
             return result;
         } catch (error) {

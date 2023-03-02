@@ -12,4 +12,8 @@ export class UpdateCategoryDto {
   @IsString()
   @IsOptional()
   category_desc?: string;
+
+  @IsString()
+  @IsOptional()
+  parent_id?: string;
 }

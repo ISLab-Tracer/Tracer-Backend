@@ -12,4 +12,8 @@ export class CreateCategoryDto {
   @IsString()
   @IsNotEmpty()
   category_desc: string;
+
+  @IsString()
+  @IsOptional()
+  parent_id?: string;
 }
