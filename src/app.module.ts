@@ -13,6 +13,7 @@ import { CategoryModule } from './category/category.module';
 import { ProjectModule } from './project/project.module';
 import { VerificationModule } from './verification/verification.module';
 import configEmail from './config/email';
+import { LoginModule } from './login/login.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import configEmail from './config/email';
     CategoryModule,
     ProjectModule,
     VerificationModule,
+    LoginModule,
   ],
   controllers: [],
   providers: [],
