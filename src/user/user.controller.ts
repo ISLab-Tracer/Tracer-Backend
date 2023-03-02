@@ -1,4 +1,5 @@
-import { UpdateUserDto, UpdateUserPasswordDto } from './dto/update-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 import {
@@ -16,7 +17,7 @@ import { Response } from 'express';
 
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   @Post('/')
   async createUser(@Res() res: Response, @Body() userInfo: CreateUserDto) {
@@ -54,9 +55,12 @@ export class UserController {
 
   // 팀별 유저 정보 조회
   @Get('team/:team_id')
-  async getUserTeamInfo(@Res() res: Response, @Param('team_id') team_id: string) {
+  async getUserTeamInfo(
+    @Res() res: Response,
+    @Param('team_id') team_id: string
+  ) {
     try {
-      const result = await this.userService.getUserTeamInfo(team_id)
+      const result = await this.userService.getUserTeamInfo(team_id);
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',
@@ -120,9 +124,12 @@ export class UserController {
       });
     }
   }
-  
+
   @Put('password')
-  async updateUserPassword(@Res() res: Response, @Body() userInfo: UpdateUserPasswordDto) {
+  async updateUserPassword(
+    @Res() res: Response,
+    @Body() userInfo: ChangePasswordDto
+  ) {
     try {
       const result = await this.userService.updateUserPassword(userInfo);
       return res.status(HttpStatus.OK).json({

@@ -1,4 +1,5 @@
-import { UpdateUserDto, UpdateUserPasswordDto } from './dto/update-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
@@ -10,7 +11,7 @@ import * as argon from 'argon2';
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>
-  ) { }
+  ) {}
 
   /**
    * 유저 정보 생성
@@ -60,12 +61,12 @@ export class UserService {
   /**
    * 팀별 유저 정보 조회
    * --
-   * @param team_id 
-   * @returns 
+   * @param team_id
+   * @returns
    */
   async getUserTeamInfo(team_id: string) {
     try {
-      const result = await this.userRepository.find({ where: { team_id } })
+      const result = await this.userRepository.find({ where: { team_id } });
       return result;
     } catch (e) {
       throw e;
@@ -133,12 +134,19 @@ export class UserService {
    * --
    * @param userInfo
    */
-  async updateUserPassword(userInfo: UpdateUserPasswordDto) {
+  async updateUserPassword(userInfo: ChangePasswordDto) {
     try {
       const { user_id, ...updateInfo } = userInfo;
-      const targeUser = await this.userRepository.findOneOrFail({ where: { user_id } });
-      if (await argon.verify(targeUser.user_password, updateInfo.user_pre_password)) {
-        console.log("ccc");
+      const targeUser = await this.userRepository.findOneOrFail({
+        where: { user_id },
+      });
+      if (
+        await argon.verify(
+          targeUser.user_password,
+          updateInfo.user_pre_password
+        )
+      ) {
+        console.log('ccc');
         const newPassword = await argon.hash(updateInfo.user_new_password);
         const result = await this.userRepository.update(
           { user_id },
