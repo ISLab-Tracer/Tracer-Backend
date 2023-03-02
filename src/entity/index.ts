@@ -6,3 +6,4 @@ export * from './login.entity';
 export * from './project.entity';
 export * from './team.entity';
 export * from './user.entity';
+export * from './handover.entity';

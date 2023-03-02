@@ -14,6 +14,7 @@ import { ProjectModule } from './project/project.module';
 import { VerificationModule } from './verification/verification.module';
 import configEmail from './config/email';
 import { LoginModule } from './login/login.module';
+import { HandoverModule } from './handover/handover.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { LoginModule } from './login/login.module';
     ProjectModule,
     VerificationModule,
     LoginModule,
+    HandoverModule,
   ],
   controllers: [],
   providers: [],
