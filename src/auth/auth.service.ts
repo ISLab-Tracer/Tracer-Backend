@@ -12,6 +12,11 @@ export class AuthService {
     private readonly verificationService: VerificationService
   ) {}
 
+  /**
+   * 회원가입 이메일 인증
+   * --
+   * @param signupInfo
+   */
   async createSignup(signupInfo: CreateSignupDto) {
     try {
     } catch (e) {
@@ -19,6 +24,11 @@ export class AuthService {
     }
   }
 
+  /**
+   * 로그인 이메일 인증
+   * --
+   * @param signinInfo
+   */
   async createSignin(signinInfo: CreateSignInDto) {
     try {
     } catch (e) {
