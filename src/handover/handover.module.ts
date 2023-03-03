@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Handover } from 'src/entity';
+import { Equipment, Handover } from 'src/entity';
 import { HandoverController } from './handover.controller';
 import { HandoverService } from './handover.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Handover])],
+  imports: [TypeOrmModule.forFeature([Handover, Equipment])],
   controllers: [HandoverController],
   providers: [HandoverService],
 })
