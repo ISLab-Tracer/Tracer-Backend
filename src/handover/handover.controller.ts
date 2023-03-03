@@ -54,46 +54,6 @@ export class HandoverController {
     }
   }
 
-  @Put()
-  async updateHandover(
-    @Res() res: Response,
-    @Body() handoverInfo: UpdateHandoverDto
-  ) {
-    try {
-      const result = await this.handoverService.updateHandover(handoverInfo);
-      return res.status(HttpStatus.OK).json({
-        status: HttpStatus.OK,
-        message: 'success',
-        data: result,
-      });
-    } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({
-        status: HttpStatus.BAD_REQUEST,
-        message: e.message,
-      });
-    }
-  }
-
-  @Delete('/:handover_id')
-  async deleteHandover(
-    @Res() res: Response,
-    @Param('handover_id') handover_id: string
-  ) {
-    try {
-      const result = await this.handoverService.deleteHandover(handover_id);
-      return res.status(HttpStatus.OK).json({
-        status: HttpStatus.OK,
-        message: 'success',
-        data: result,
-      });
-    } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({
-        status: HttpStatus.BAD_REQUEST,
-        message: e.message,
-      });
-    }
-  }
-
   @Get('/:handover_id')
   async getHandoverInfo(
     @Res() res: Response,
@@ -143,6 +103,46 @@ export class HandoverController {
   ) {
     try {
       const result = await this.handoverService.getHandoverUserInfo(user_id);
+      return res.status(HttpStatus.OK).json({
+        status: HttpStatus.OK,
+        message: 'success',
+        data: result,
+      });
+    } catch (e) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        status: HttpStatus.BAD_REQUEST,
+        message: e.message,
+      });
+    }
+  }
+
+  @Put()
+  async updateHandover(
+    @Res() res: Response,
+    @Body() handoverInfo: UpdateHandoverDto
+  ) {
+    try {
+      const result = await this.handoverService.updateHandover(handoverInfo);
+      return res.status(HttpStatus.OK).json({
+        status: HttpStatus.OK,
+        message: 'success',
+        data: result,
+      });
+    } catch (e) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        status: HttpStatus.BAD_REQUEST,
+        message: e.message,
+      });
+    }
+  }
+
+  @Delete('/:handover_id')
+  async deleteHandover(
+    @Res() res: Response,
+    @Param('handover_id') handover_id: string
+  ) {
+    try {
+      const result = await this.handoverService.deleteHandover(handover_id);
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',

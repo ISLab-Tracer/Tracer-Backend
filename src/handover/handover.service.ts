@@ -43,43 +43,6 @@ export class HandoverService {
   }
 
   /**
-   * 핸드오버 정보 수정
-   * --
-   * @param handoverInfo
-   */
-  async updateHandover(handoverInfo: UpdateHandoverDto) {
-    try {
-      const { handover_id, ...updateInfo } = handoverInfo;
-
-      const result = await this.handoverRepository.update(
-        { handover_id },
-        updateInfo
-      );
-      return result;
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  /**
-   * 핸드오버 정보 삭제
-   * --
-   * @param handover_id
-   * @returns
-   */
-  async deleteHandover(handover_id: string) {
-    try {
-      await this.handoverRepository.findOneOrFail({
-        where: { handover_id },
-      });
-      const result = await this.handoverRepository.delete({ handover_id });
-      return result;
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  /**
    * 핸드오버 상세 정보 조회
    * @param handover_id
    * @returns
@@ -123,6 +86,43 @@ export class HandoverService {
       const result = await this.handoverRepository.find({
         where: { user_id },
       });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
+   * 핸드오버 정보 수정
+   * --
+   * @param handoverInfo
+   */
+  async updateHandover(handoverInfo: UpdateHandoverDto) {
+    try {
+      const { handover_id, ...updateInfo } = handoverInfo;
+
+      const result = await this.handoverRepository.update(
+        { handover_id },
+        updateInfo
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
+   * 핸드오버 정보 삭제
+   * --
+   * @param handover_id
+   * @returns
+   */
+  async deleteHandover(handover_id: string) {
+    try {
+      await this.handoverRepository.findOneOrFail({
+        where: { handover_id },
+      });
+      const result = await this.handoverRepository.delete({ handover_id });
       return result;
     } catch (e) {
       throw e;
