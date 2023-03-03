@@ -157,4 +157,21 @@ export class UserService {
       throw e;
     }
   }
+
+  /**
+   * 회원 이메일 체크
+   * --
+   * @param user_email
+   * @returns
+   */
+  async checkEmail(user_email: string) {
+    try {
+      const result = await this.userRepository.findOneOrFail({
+        where: { user_email },
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
 }

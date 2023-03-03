@@ -1,10 +1,4 @@
-import {
-  IsBoolean,
-  IsEnum,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { USER_DIVIDE } from 'src/entity/user.entity';
 
 export class CreateUserDto {

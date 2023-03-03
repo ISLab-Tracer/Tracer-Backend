@@ -19,6 +19,9 @@ export class AuthService {
    */
   async createSignup(signupInfo: CreateSignupDto) {
     try {
+      const { user_email } = signupInfo;
+      await this.userService.checkEmail(user_email);
+      return signupInfo;
     } catch (e) {
       throw e;
     }
