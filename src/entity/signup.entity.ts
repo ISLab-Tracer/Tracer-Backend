@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -11,6 +12,7 @@ export enum SIGNUP_STATUS {
   CANCEL = 'CANCEL',
 }
 
+@Entity({ name: 't_signup' })
 export class SignUp {
   @PrimaryGeneratedColumn('uuid')
   signup_id: string;

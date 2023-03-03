@@ -32,13 +32,13 @@ export class VerificationService {
 
   async signin(to: string, login: string) {
     try {
+      const signin_url = `${process.env.FRONTEND_URL}/login/${login}`;
       const result = await this._send(
         [to],
         'ISLab Tracer 로그인',
         'signin.ejs',
         {
-          email: to,
-          datetime: new Date(),
+          signin_url,
         }
       );
       return result;
@@ -47,8 +47,10 @@ export class VerificationService {
     }
   }
 
-  async signup(to: string, name: string) {
+  async signup(to: string, name: string, signup_id: string) {
     try {
+      const signup_url = `${process.env.FRONTEND_URL}/register/${signup_id}`;
+
       const result = await this._send(
         [to],
         'ISLab Tracer 회원가입',
@@ -56,6 +58,7 @@ export class VerificationService {
         {
           email: to,
           name,
+          signup_url,
         }
       );
       return result;
