@@ -14,30 +14,53 @@ export class VerificationService {
     try {
       const result = await this.mailerService.sendMail({
         to: tos.join(', '),
+        from: process.env.EMAIL_AUTH_ADDRESS,
         subject,
         template: `${templateName}`,
         context,
       });
-
-      console.log(result);
+      const { accepted } = result;
+      if (accepted.length === 0) {
+        throw new Error('이메일 전송에 실패했습니다.');
+      }
 
       return true;
     } catch (error) {
-      console.log(error);
       return false;
     }
   }
 
-  async signin(to: string) {
-    await this._send([to], '로그인 시도', 'signin.ejs', {
-      email: to,
-      datetime: new Date(),
-    });
+  async signin(to: string, login: string) {
+    try {
+      const result = await this._send(
+        [to],
+        'ISLab Tracer 로그인',
+        'signin.ejs',
+        {
+          email: to,
+          datetime: new Date(),
+        }
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
   }
 
-  async signup(to: string) {
-    await this._send([to], '회원가입 완료', 'signup.ejs', {
-      email: to,
-    });
+  async signup(to: string, name: string) {
+    try {
+      const result = await this._send(
+        [to],
+        'ISLab Tracer 회원가입',
+        'signup.ejs',
+        {
+          email: to,
+          name,
+        }
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
   }
 }

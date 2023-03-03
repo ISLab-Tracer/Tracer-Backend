@@ -1,3 +1,4 @@
+import { CreateSignupDto } from './../auth/dto/create-signup.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { User } from 'src/entity';
@@ -36,6 +37,24 @@ export class UserService {
       });
 
       delete result.user_password;
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
+   * 유저 정보 임시 생성
+   * --
+   * @param userInfo
+   * @returns
+   */
+  async createTempUser(userInfo: CreateSignupDto) {
+    try {
+      const result = await this.userRepository.save({
+        ...userInfo,
+        user_usage: false,
+      });
       return result;
     } catch (e) {
       throw e;
@@ -153,6 +172,29 @@ export class UserService {
         return result;
       }
       return null;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  // Utils
+  /**
+   * 회원 이메일 체크
+   * --
+   * @param user_email
+   * @returns
+   */
+  async checkEmail(user_email: string): Promise<boolean> {
+    try {
+      const result = await this.userRepository.findOne({
+        where: { user_email },
+      });
+
+      if (result) {
+        return true;
+      }
+
+      return false;
     } catch (e) {
       throw e;
     }

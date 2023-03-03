@@ -11,5 +11,9 @@ export class CreateSignupDto {
 
   @IsString()
   @IsNotEmpty()
+  team_id: string;
+
+  @IsString()
+  @IsNotEmpty()
   user_password: string;
 }
