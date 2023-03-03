@@ -1,20 +1,21 @@
-import path from 'path';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MailerModule } from '@nestjs-modules/mailer';
-import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
+import path from 'path';
+import { AuthModule } from './auth/auth.module';
+import { CategoryModule } from './category/category.module';
+import configEmail from './config/email';
 import { DbModule } from './db/db.module';
 import { DbService } from './db/db.service';
-import { AuthModule } from './auth/auth.module';
+import { EquipmentModule } from './equipment/equipment.module';
+import { HandoverModule } from './handover/handover.module';
+import { LoginModule } from './login/login.module';
+import { ProjectModule } from './project/project.module';
 import { TeamModule } from './team/team.module';
 import { UserModule } from './user/user.module';
-import { CategoryModule } from './category/category.module';
-import { ProjectModule } from './project/project.module';
 import { VerificationModule } from './verification/verification.module';
-import configEmail from './config/email';
-import { LoginModule } from './login/login.module';
-import { EquipmentModule } from './equipment/equipment.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { EquipmentModule } from './equipment/equipment.module';
     ProjectModule,
     VerificationModule,
     LoginModule,
+    HandoverModule,
     EquipmentModule,
   ],
   controllers: [],
