@@ -7,3 +7,4 @@ export * from './project.entity';
 export * from './project_member.entity';
 export * from './team.entity';
 export * from './user.entity';
+export * from './signup.entity';
