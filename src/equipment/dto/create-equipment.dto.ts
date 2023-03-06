@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateEquipmentDto {
   @IsString()
@@ -15,6 +15,10 @@ export class CreateEquipmentDto {
 
   @IsString()
   @IsNotEmpty()
+  user_id: string;
+
+  @IsString()
+  @IsNotEmpty()
   equipment_nm: string;
 
   @IsString()
@@ -23,5 +27,13 @@ export class CreateEquipmentDto {
 
   @IsString()
   @IsOptional()
-  user_nequipment_thumbnailm: string;
+  user_nequipment_thumbnailm?: string;
+
+  @IsNumber()
+  @IsOptional()
+  equipment_price?: number;
+
+  @IsNumber()
+  @IsOptional()
+  equipment_qty?: number;
 }

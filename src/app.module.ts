@@ -16,6 +16,9 @@ import { ProjectModule } from './project/project.module';
 import { TeamModule } from './team/team.module';
 import { UserModule } from './user/user.module';
 import { VerificationModule } from './verification/verification.module';
+import { ChargeModule } from './charge/charge.module';
+import { TraceModule } from './trace/trace.module';
+import { LocationModule } from './location/location.module';
 
 @Module({
   imports: [
@@ -53,6 +56,9 @@ import { VerificationModule } from './verification/verification.module';
     LoginModule,
     HandoverModule,
     EquipmentModule,
+    ChargeModule,
+    TraceModule,
+    LocationModule,
   ],
   controllers: [],
   providers: [],

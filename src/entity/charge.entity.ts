@@ -16,7 +16,7 @@ export class Charge {
   @PrimaryColumn()
   equipment_id: string;
 
-  @Column()
+  @Column({ default: true })
   charge_status: boolean;
 
   @CreateDateColumn()

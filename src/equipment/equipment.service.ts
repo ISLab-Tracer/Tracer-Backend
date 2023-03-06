@@ -42,6 +42,73 @@ export class EquipmentService {
   }
 
   /**
+   * 기자재 상세 정보 조회
+   * @param equipment_id
+   * @returns
+   */
+  async getEquipmentInfo(equipment_id: string) {
+    try {
+      const equipment = await this.equipmentRepository.findOneOrFail({
+        where: { equipment_id },
+      });
+      return equipment;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
+   * 카테고리별 기자재 정보 조회
+   * --
+   * @param category_id
+   * @returns
+   */
+  async getCategoryEquipmentInfo(category_id: string) {
+    try {
+      const result = await this.equipmentRepository.find({
+        where: { category_id },
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
+   * 프로젝트별 기자재 정보 조회
+   * --
+   * @param project_id
+   * @returns
+   */
+  async getProjectEquipmentInfo(project_id: string) {
+    try {
+      const result = await this.equipmentRepository.find({
+        where: { project_id },
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
+   * 유저별 기자재 정보 조회
+   * --
+   * @param user_id
+   * @returns
+   */
+  async getUserEquipmentInfo(user_id: string) {
+    try {
+      const result = await this.equipmentRepository.find({
+        where: { user_id },
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
    * 기자재 정보 수정
    * --
    * @param equipmentInfo
@@ -69,56 +136,6 @@ export class EquipmentService {
     try {
       await this.equipmentRepository.findOneOrFail({ where: { equipment_id } });
       const result = await this.equipmentRepository.delete({ equipment_id });
-      return result;
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  /**
-   * 기자재 상세 정보 조회
-   * @param equipment_id
-   * @returns
-   */
-  async getEquipmentInfo(equipment_id: string) {
-    try {
-      const equipment = await this.equipmentRepository.findOneOrFail({
-        where: { equipment_id },
-      });
-      return equipment;
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  /**
-   * 카테고리별 기자재 정보 조회
-   * --
-   * @param category_id
-   * @returns
-   */
-  async getEquipmentCategoryInfo(category_id: string) {
-    try {
-      const result = await this.equipmentRepository.find({
-        where: { category_id },
-      });
-      return result;
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  /**
-   * 프로젝트별 기자재 정보 조회
-   * --
-   * @param project_id
-   * @returns
-   */
-  async getEquipmentProjectInfo(project_id: string) {
-    try {
-      const result = await this.equipmentRepository.find({
-        where: { project_id },
-      });
       return result;
     } catch (e) {
       throw e;

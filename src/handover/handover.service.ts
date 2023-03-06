@@ -64,7 +64,7 @@ export class HandoverService {
    * @param equipment_id
    * @returns
    */
-  async getHandoverEquipmentInfo(equipment_id: string) {
+  async getEquipmentHandoverInfo(equipment_id: string) {
     try {
       const result = await this.handoverRepository.find({
         where: { equipment_id },
@@ -81,7 +81,7 @@ export class HandoverService {
    * @param user_id
    * @returns
    */
-  async getHandoverUserInfo(user_id: string) {
+  async getUserHandoverInfo(user_id: string) {
     try {
       const result = await this.handoverRepository.find({
         where: { user_id },
