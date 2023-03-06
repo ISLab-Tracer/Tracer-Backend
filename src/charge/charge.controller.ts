@@ -54,11 +54,11 @@ export class ChargeController {
     }
   }
 
-  @Get('/user/:user_id/equipment/:equipment_id')
+  @Get('/info/:user_id/:equipment_id')
   async getChargeInfo(
     @Res() res: Response,
-    @Param() user_id: string,
-    equipment_id: string
+    @Param('user_id') user_id: string,
+    @Param('equipment_id') equipment_id: string
   ) {
     try {
       const result = await this.chargeService.getChargeInfo(
@@ -143,8 +143,8 @@ export class ChargeController {
   @Delete('/:user_id/:equipment_id')
   async deleteCharge(
     @Res() res: Response,
-    @Param() user_id: string,
-    equipment_id: string
+    @Param('user_id') user_id: string,
+    @Param('equipment_id') equipment_id: string
   ) {
     try {
       const result = await this.chargeService.deleteCharge(
