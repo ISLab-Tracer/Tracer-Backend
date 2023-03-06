@@ -43,13 +43,14 @@ export class ChargeService {
 
   /**
    * 책임자 상세 정보 조회
-   * @param keys
+   * @param user_id
+   * @param equipment_id
    * @returns
    */
-  async getChargeInfo(keys, _) {
+  async getChargeInfo(user_id: string, equipment_id: string) {
     try {
       const result = await this.chargeRepository.find({
-        where: { user_id: keys.user_id, equipment_id: keys.equipment_id },
+        where: { user_id, equipment_id },
       });
       return result;
     } catch (e) {
