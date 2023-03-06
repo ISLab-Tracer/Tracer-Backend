@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { UpdateLoginDto } from './../login/dto/update-login.dto';
 import { CreateUserDto } from './../user/dto/create-user.dto';
 import { LoginService } from './../login/login.service';
-import { SignUp } from './../entity/signup.entity';
+import { SignUp, SIGNUP_STATUS } from './../entity/signup.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateSignInDto } from './dto/create-signin.dto';
 import { CreateSignupDto } from './dto/create-signup.dto';
@@ -82,17 +82,22 @@ export class AuthService {
         throw new Error('존재하지 않는 이메일입니다.');
       }
 
-      // const check2 = await this.loginService.getLoginInfo(user_email);
-      // if (check2) {
-      //   throw new Error('이미 로그인 요청된 이메일입니다.');
-      // }
+      const { user_id } = user;
+
+      const check2 = await this.loginService.checkLogin(user_id);
+      if (check2) {
+        throw new Error('이미 로그인 요청된 이메일입니다.');
+      }
 
       const login = await this.loginService.createLogin(user);
 
       const { login_id } = login;
+      const { user_nm, user_rank } = user;
+      const _user = user_nm + ' ' + this.userService.getUserRank(user_rank);
       const result = await this.verificationService.signin(
         user_email,
-        login_id
+        login_id,
+        _user
       );
 
       return result;
@@ -139,8 +144,23 @@ export class AuthService {
    */
   async requestSignup(userInfo: CreateUserDto) {
     try {
-      const result = await this.userService.createUser(userInfo);
-      return result;
+      const user = await this.userService.createUser(userInfo);
+      if (!user) {
+        throw new Error('회원 등록에 실패했습니다.');
+      }
+
+      await this.signupRepository.update(
+        { signup_mail: userInfo.user_email },
+        { signup_status: SIGNUP_STATUS.DONE }
+      );
+
+      delete user.user_password;
+      const access_token = await this.generateToken(user.user_id, 'NORMAL');
+      const login_data = {
+        ...user,
+        ...access_token,
+      };
+      return login_data;
     } catch (e) {
       throw e;
     }

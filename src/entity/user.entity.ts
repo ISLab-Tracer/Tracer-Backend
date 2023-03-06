@@ -13,6 +13,15 @@ export enum USER_DIVIDE {
   NORMAL = 'NORMAL',
   ADMIN = 'ADMIN',
 }
+export enum USER_RANK {
+  ASSISTANT = 'ASSISTANT',
+  RESEARCH = 'RESEARCH',
+  SENIOR = 'SENIOR',
+  PRINCIPAL = 'PRINCIPAL',
+  MASTER = 'MASTER',
+  PHD = 'PHD',
+  ETC = 'ETC',
+}
 
 @Entity({ name: 't_user' })
 export class User {
@@ -36,6 +45,9 @@ export class User {
 
   @Column({ default: false })
   user_usage: boolean;
+
+  @Column({ type: 'enum', enum: USER_RANK, default: USER_RANK.MASTER })
+  user_rank: USER_RANK;
 
   @CreateDateColumn()
   created_at: Date;
