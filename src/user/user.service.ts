@@ -1,7 +1,8 @@
+import { USER_RANK } from './../entity/user.entity';
 import { CreateSignupDto } from './../auth/dto/create-signup.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
-import { User } from 'src/entity';
+import { User, USER_DIVIDE } from 'src/entity';
 import { Repository } from 'typeorm';
 import { ChangePasswordDto, CreateUserDto, UpdateUserDto } from './dto';
 import * as argon from 'argon2';
@@ -197,6 +198,26 @@ export class UserService {
       return false;
     } catch (e) {
       throw e;
+    }
+  }
+
+  getUserRank(user_divide: USER_RANK) {
+    switch (user_divide) {
+      case USER_RANK.ASSISTANT:
+        return '주임 연구원';
+      case USER_RANK.RESEARCH:
+        return '선임 연구원';
+      case USER_RANK.SENIOR:
+        return '책임 연구원';
+      case USER_RANK.PRINCIPAL:
+        return '수석 연구원';
+      case USER_RANK.PHD:
+        return '박사(과정)';
+      case USER_RANK.ETC:
+        return '';
+      case USER_RANK.MASTER:
+      default:
+        return '석사(과정)';
     }
   }
 }

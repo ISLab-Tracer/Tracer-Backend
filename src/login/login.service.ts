@@ -53,7 +53,7 @@ export class LoginService {
   async getLoginInfo(login_id: string) {
     try {
       const user = await this.loginRepository.findOneOrFail({
-        where: { login_id: login_id },
+        where: { login_id: login_id, login_status: false },
       });
       return user;
     } catch (e) {
@@ -73,6 +73,28 @@ export class LoginService {
         where: { user_id: user_id },
       });
       return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
+   * 중복 로그인 요청 체크
+   * --
+   * @param user_id
+   * @returns
+   */
+  async checkLogin(user_id: string) {
+    try {
+      const result = await this.loginRepository.findOne({
+        where: { user_id, login_status: false },
+        order: { created_at: 'DESC' },
+      });
+      if (!result) {
+        return false;
+      }
+      const { login_status } = result;
+      return !login_status;
     } catch (e) {
       throw e;
     }

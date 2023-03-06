@@ -30,7 +30,7 @@ export class VerificationService {
     }
   }
 
-  async signin(to: string, login: string) {
+  async signin(to: string, login: string, user: string) {
     try {
       const signin_url = `${process.env.FRONTEND_URL}/login/${login}`;
       const result = await this._send(
@@ -39,6 +39,7 @@ export class VerificationService {
         'signin.ejs',
         {
           signin_url,
+          user,
         }
       );
       return result;
