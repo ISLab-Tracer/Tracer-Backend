@@ -46,6 +46,39 @@ export class LoginService {
   }
 
   /**
+   * 로그인 상세 정보 조회
+   * @param login_id
+   * @returns
+   */
+  async getLoginInfo(login_id: string) {
+    try {
+      const user = await this.loginRepository.findOneOrFail({
+        where: { login_id: login_id },
+      });
+      return user;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
+   * 유저별 로그인 정보 조회
+   * --
+   * @param user_id
+   * @returns
+   */
+  async getUserLoginInfo(user_id: string) {
+    try {
+      const result = await this.loginRepository.find({
+        where: { user_id: user_id },
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
    * 로그인 정보 수정
    * --
    * @param loginInfo
@@ -76,39 +109,6 @@ export class LoginService {
       await this.loginRepository.findOneOrFail({ where: { login_id } });
 
       const result = await this.loginRepository.delete({ login_id });
-      return result;
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  /**
-   * 로그인 상세 정보 조회
-   * @param login_id
-   * @returns
-   */
-  async getLoginInfo(login_id: string) {
-    try {
-      const user = await this.loginRepository.findOneOrFail({
-        where: { login_id: login_id },
-      });
-      return user;
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  /**
-   * 유저별 로그인 정보 조회
-   * --
-   * @param user_id
-   * @returns
-   */
-  async getUserLoginInfo(user_id: string) {
-    try {
-      const result = await this.loginRepository.find({
-        where: { user_id: user_id },
-      });
       return result;
     } catch (e) {
       throw e;

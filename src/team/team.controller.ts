@@ -53,6 +53,23 @@ export class TeamController {
     }
   }
 
+  @Get('/:team_id')
+  async getTraceInfo(@Res() res: Response, @Param('team_id') team_id: string) {
+    try {
+      const result = await this.teamService.getTeamInfo(team_id);
+      return res.status(HttpStatus.OK).json({
+        status: HttpStatus.OK,
+        message: 'success',
+        data: result,
+      });
+    } catch (e) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        status: HttpStatus.BAD_REQUEST,
+        message: e.message,
+      });
+    }
+  }
+
   @Put()
   async updateTeam(@Res() res: Response, @Body() teamInfo: UpdateTeamDto) {
     try {

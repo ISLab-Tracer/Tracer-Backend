@@ -1,7 +1,7 @@
-import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
-import { Team } from 'src/entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Team } from 'src/entity';
+import { Repository } from 'typeorm';
 import { CreateTeamDto, UpdateTeamDto } from './dto';
 
 @Injectable()
@@ -35,6 +35,22 @@ export class TeamService {
     try {
       const result = await this.teamRepository.find();
       return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
+   * 팀 상세 정보 조회
+   * @param team_id
+   * @returns
+   */
+  async getTeamInfo(team_id: string) {
+    try {
+      const trace = await this.teamRepository.findOneOrFail({
+        where: { team_id },
+      });
+      return trace;
     } catch (e) {
       throw e;
     }
