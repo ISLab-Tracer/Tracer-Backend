@@ -51,40 +51,6 @@ export class LoginController {
     }
   }
 
-  @Put()
-  async updateLogin(@Res() res: Response, @Body() loginInfo: UpdateLoginDto) {
-    try {
-      const result = await this.loginService.updateLogin(loginInfo);
-      return res.status(HttpStatus.OK).json({
-        status: HttpStatus.OK,
-        message: 'success',
-        data: result,
-      });
-    } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({
-        status: HttpStatus.BAD_REQUEST,
-        message: e.message,
-      });
-    }
-  }
-
-  @Delete('/:login_id')
-  async deleteLogin(@Res() res: Response, @Param('login_id') login_id: string) {
-    try {
-      const result = await this.loginService.deleteLogin(login_id);
-      return res.status(HttpStatus.OK).json({
-        status: HttpStatus.OK,
-        message: 'success',
-        data: result,
-      });
-    } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({
-        status: HttpStatus.BAD_REQUEST,
-        message: e.message,
-      });
-    }
-  }
-
   @Get('/:login_id')
   async getLoginInfo(
     @Res() res: Response,
@@ -112,6 +78,40 @@ export class LoginController {
   ) {
     try {
       const result = await this.loginService.getUserLoginInfo(user_id);
+      return res.status(HttpStatus.OK).json({
+        status: HttpStatus.OK,
+        message: 'success',
+        data: result,
+      });
+    } catch (e) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        status: HttpStatus.BAD_REQUEST,
+        message: e.message,
+      });
+    }
+  }
+
+  @Put()
+  async updateLogin(@Res() res: Response, @Body() loginInfo: UpdateLoginDto) {
+    try {
+      const result = await this.loginService.updateLogin(loginInfo);
+      return res.status(HttpStatus.OK).json({
+        status: HttpStatus.OK,
+        message: 'success',
+        data: result,
+      });
+    } catch (e) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        status: HttpStatus.BAD_REQUEST,
+        message: e.message,
+      });
+    }
+  }
+
+  @Delete('/:login_id')
+  async deleteLogin(@Res() res: Response, @Param('login_id') login_id: string) {
+    try {
+      const result = await this.loginService.deleteLogin(login_id);
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',
