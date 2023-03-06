@@ -14,10 +14,16 @@ export class Category {
   category_id: string;
 
   @Column()
+  parent_id: string;
+
+  @Column()
   category_nm: string;
 
   @Column()
   category_desc: string;
+
+  @Column({ default: 0 })
+  category_level: number;
 
   @CreateDateColumn()
   created_at: Date;
@@ -25,13 +31,10 @@ export class Category {
   @UpdateDateColumn()
   modified_at: Date;
 
-  @Column()
-  parent_id: string;
-
   @ManyToOne(() => Category, (category) => category.parent_id, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'parent_id' })
-  category_parent: Category;
+  category: Category;
 }

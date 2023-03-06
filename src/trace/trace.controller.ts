@@ -10,20 +10,17 @@ import {
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { CreateEquipmentDto, UpdateEquipmentDto } from './dto';
-import { EquipmentService } from './equipment.service';
+import { CreateTraceDto, UpdateTraceDto } from './dto';
+import { TraceService } from './trace.service';
 
-@Controller('equipment')
-export class EquipmentController {
-  constructor(private equipmentService: EquipmentService) {}
+@Controller('trace')
+export class TraceController {
+  constructor(private traceService: TraceService) {}
 
   @Post('/')
-  async createEquipment(
-    @Res() res: Response,
-    @Body() equipmentInfo: CreateEquipmentDto
-  ) {
+  async createTrace(@Res() res: Response, @Body() traceInfo: CreateTraceDto) {
     try {
-      const result = await this.equipmentService.createEquipment(equipmentInfo);
+      const result = await this.traceService.createTrace(traceInfo);
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',
@@ -38,9 +35,9 @@ export class EquipmentController {
   }
 
   @Get('/')
-  async getEquipmentList(@Res() res: Response) {
+  async getTraceList(@Res() res: Response) {
     try {
-      const result = await this.equipmentService.getEquipmentList();
+      const result = await this.traceService.getTraceList();
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',
@@ -54,13 +51,13 @@ export class EquipmentController {
     }
   }
 
-  @Get('/:equipment_id')
-  async getEquipmentInfo(
+  @Get('/:trace_id')
+  async getTraceInfo(
     @Res() res: Response,
-    @Param('equipment_id') equipment_id: string
+    @Param('trace_id') trace_id: string
   ) {
     try {
-      const result = await this.equipmentService.getEquipmentInfo(equipment_id);
+      const result = await this.traceService.getTraceInfo(trace_id);
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',
@@ -74,37 +71,13 @@ export class EquipmentController {
     }
   }
 
-  @Get('category/:category_id')
-  async getCategoryEquipmentInfo(
+  @Get('location/:location_id')
+  async getLocationTraceInfo(
     @Res() res: Response,
-    @Param('category_id') category_id: string
+    @Param('location_id') location_id: string
   ) {
     try {
-      const result = await this.equipmentService.getCategoryEquipmentInfo(
-        category_id
-      );
-      return res.status(HttpStatus.OK).json({
-        status: HttpStatus.OK,
-        message: 'success',
-        data: result,
-      });
-    } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({
-        status: HttpStatus.BAD_REQUEST,
-        message: e.message,
-      });
-    }
-  }
-
-  @Get('project/:project_id')
-  async getProjectEquipmentInfo(
-    @Res() res: Response,
-    @Param('project_id') project_id: string
-  ) {
-    try {
-      const result = await this.equipmentService.getProjectEquipmentInfo(
-        project_id
-      );
+      const result = await this.traceService.getLocationTraceInfo(location_id);
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',
@@ -119,12 +92,34 @@ export class EquipmentController {
   }
 
   @Get('user/:user_id')
-  async getUserEquipmentInfo(
+  async getUserTraceInfo(
     @Res() res: Response,
     @Param('user_id') user_id: string
   ) {
     try {
-      const result = await this.equipmentService.getUserEquipmentInfo(user_id);
+      const result = await this.traceService.getUserTraceInfo(user_id);
+      return res.status(HttpStatus.OK).json({
+        status: HttpStatus.OK,
+        message: 'success',
+        data: result,
+      });
+    } catch (e) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        status: HttpStatus.BAD_REQUEST,
+        message: e.message,
+      });
+    }
+  }
+
+  @Get('equipment/:equipment_id')
+  async getEquipmentTraceInfo(
+    @Res() res: Response,
+    @Param('equipment_id') equipment_id: string
+  ) {
+    try {
+      const result = await this.traceService.getEquipmentTraceInfo(
+        equipment_id
+      );
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',
@@ -139,12 +134,9 @@ export class EquipmentController {
   }
 
   @Put()
-  async updateEquipment(
-    @Res() res: Response,
-    @Body() equipmentInfo: UpdateEquipmentDto
-  ) {
+  async updateTrace(@Res() res: Response, @Body() traceInfo: UpdateTraceDto) {
     try {
-      const result = await this.equipmentService.updateEquipment(equipmentInfo);
+      const result = await this.traceService.updateTrace(traceInfo);
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',
@@ -158,13 +150,10 @@ export class EquipmentController {
     }
   }
 
-  @Delete('/:equipment_id')
-  async deleteEquipment(
-    @Res() res: Response,
-    @Param('equipment_id') equipment_id: string
-  ) {
+  @Delete('/:trace_id')
+  async deleteTrace(@Res() res: Response, @Param('trace_id') trace_id: string) {
     try {
-      const result = await this.equipmentService.deleteEquipment(equipment_id);
+      const result = await this.traceService.deleteTrace(trace_id);
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',

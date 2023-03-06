@@ -1,4 +1,4 @@
-import { Category, Project } from 'src/entity';
+import { Category, Project, User } from 'src/entity';
 import {
   Column,
   CreateDateColumn,
@@ -21,6 +21,9 @@ export class Equipment {
   project_id: string;
 
   @Column()
+  user_id: string;
+
+  @Column()
   equipment_nm: string;
 
   @Column()
@@ -28,6 +31,12 @@ export class Equipment {
 
   @Column()
   equipment_thumbnail: string;
+
+  @Column()
+  equipment_price: number;
+
+  @Column()
+  equipment_qty: number;
 
   @CreateDateColumn()
   created_at: Date;
@@ -48,4 +57,11 @@ export class Equipment {
   })
   @JoinColumn({ name: 'project_id' })
   project: Project;
+
+  @ManyToOne(() => User, (user) => user.user_id, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 }

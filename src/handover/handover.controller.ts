@@ -75,12 +75,12 @@ export class HandoverController {
   }
 
   @Get('equipment/:equipment_id')
-  async getHandoverEquipmentInfo(
+  async getEquipmentHandoverInfo(
     @Res() res: Response,
     @Param('equipment_id') equipment_id: string
   ) {
     try {
-      const result = await this.handoverService.getHandoverEquipmentInfo(
+      const result = await this.handoverService.getEquipmentHandoverInfo(
         equipment_id
       );
       return res.status(HttpStatus.OK).json({
@@ -97,12 +97,12 @@ export class HandoverController {
   }
 
   @Get('user/:user_id')
-  async getHandoverUserInfo(
+  async getUserHandoverInfo(
     @Res() res: Response,
     @Param('user_id') user_id: string
   ) {
     try {
-      const result = await this.handoverService.getHandoverUserInfo(user_id);
+      const result = await this.handoverService.getUserHandoverInfo(user_id);
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',

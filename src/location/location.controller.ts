@@ -10,57 +10,59 @@ import {
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { CategoryService } from './category.service';
-import { CreateCategoryDto, UpdateCategoryDto } from './dto';
+import { CreateLocationDto, UpdateLocationDto } from './dto';
+import { LocationService } from './location.service';
 
-@Controller('category')
-export class CategoryController {
-  constructor(private categoryService: CategoryService) {}
+@Controller('location')
+export class LocationController {
+  constructor(private locationService: LocationService) {}
 
   @Post('/')
-  async createCategory(
+  async createLocation(
     @Res() res: Response,
-    @Body() categoryInfo: CreateCategoryDto
+    @Body() locationInfo: CreateLocationDto
   ) {
     try {
-      const result = await this.categoryService.createCategory(categoryInfo);
+      const result = await this.locationService.createLocation(locationInfo);
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
-        message: 'success',
         data: result,
+        message: 'Success',
       });
-    } catch (e) {
+    } catch (error) {
+      console.log(error);
       return res.status(HttpStatus.BAD_REQUEST).json({
         status: HttpStatus.BAD_REQUEST,
-        message: e.message,
+        message: 'Failure',
       });
     }
   }
 
   @Get('/')
-  async getCategoryList(@Res() res: Response) {
+  async getLocationList(@Res() res: Response) {
     try {
-      const result = await this.categoryService.getCategoryList();
+      const result = await this.locationService.getLocationList();
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
-        message: 'success',
         data: result,
+        message: 'Success',
       });
-    } catch (e) {
+    } catch (error) {
+      console.log(error);
       return res.status(HttpStatus.BAD_REQUEST).json({
         status: HttpStatus.BAD_REQUEST,
-        message: e.message,
+        message: 'Failure',
       });
     }
   }
 
-  @Get('/:category_id')
-  async getCategoryInfo(
+  @Get('/:location_id')
+  async getLoginInfo(
     @Res() res: Response,
-    @Param('category_id') user_id: string
+    @Param('location_id') location_id: string
   ) {
     try {
-      const result = await this.categoryService.getCategoryInfo(user_id);
+      const result = await this.locationService.getLocationInfo(location_id);
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',
@@ -75,12 +77,12 @@ export class CategoryController {
   }
 
   @Put()
-  async updateCategory(
+  async updateLocation(
     @Res() res: Response,
-    @Body() userInfo: UpdateCategoryDto
+    @Body() locationInfo: UpdateLocationDto
   ) {
     try {
-      const result = await this.categoryService.updateCategory(userInfo);
+      const result = await this.locationService.updateLocation(locationInfo);
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',
@@ -94,13 +96,13 @@ export class CategoryController {
     }
   }
 
-  @Delete('/:category_id')
-  async deleteUser(
+  @Delete('/:location_id')
+  async deleteLocation(
     @Res() res: Response,
-    @Param('category_id') user_id: string
+    @Param('location_id') location_id: string
   ) {
     try {
-      const result = await this.categoryService.deleteCategory(user_id);
+      const result = await this.locationService.deleteLocation(location_id);
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',

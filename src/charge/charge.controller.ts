@@ -10,20 +10,20 @@ import {
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { CreateEquipmentDto, UpdateEquipmentDto } from './dto';
-import { EquipmentService } from './equipment.service';
+import { ChargeService } from './charge.service';
+import { CreateChargeDto, UpdateChargeDto } from './dto';
 
-@Controller('equipment')
-export class EquipmentController {
-  constructor(private equipmentService: EquipmentService) {}
+@Controller('charge')
+export class ChargeController {
+  constructor(private chargeService: ChargeService) {}
 
   @Post('/')
-  async createEquipment(
+  async createCharge(
     @Res() res: Response,
-    @Body() equipmentInfo: CreateEquipmentDto
+    @Body() chargeInfo: CreateChargeDto
   ) {
     try {
-      const result = await this.equipmentService.createEquipment(equipmentInfo);
+      const result = await this.chargeService.createCharge(chargeInfo);
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',
@@ -38,9 +38,9 @@ export class EquipmentController {
   }
 
   @Get('/')
-  async getEquipmentList(@Res() res: Response) {
+  async getChargeList(@Res() res: Response) {
     try {
-      const result = await this.equipmentService.getEquipmentList();
+      const result = await this.chargeService.getChargeList();
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',
@@ -54,56 +54,16 @@ export class EquipmentController {
     }
   }
 
-  @Get('/:equipment_id')
-  async getEquipmentInfo(
+  @Get('/user/:user_id/equipment/:equipment_id')
+  async getChargeInfo(
     @Res() res: Response,
-    @Param('equipment_id') equipment_id: string
+    @Param() user_id: string,
+    equipment_id: string
   ) {
     try {
-      const result = await this.equipmentService.getEquipmentInfo(equipment_id);
-      return res.status(HttpStatus.OK).json({
-        status: HttpStatus.OK,
-        message: 'success',
-        data: result,
-      });
-    } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({
-        status: HttpStatus.BAD_REQUEST,
-        message: e.message,
-      });
-    }
-  }
-
-  @Get('category/:category_id')
-  async getCategoryEquipmentInfo(
-    @Res() res: Response,
-    @Param('category_id') category_id: string
-  ) {
-    try {
-      const result = await this.equipmentService.getCategoryEquipmentInfo(
-        category_id
-      );
-      return res.status(HttpStatus.OK).json({
-        status: HttpStatus.OK,
-        message: 'success',
-        data: result,
-      });
-    } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({
-        status: HttpStatus.BAD_REQUEST,
-        message: e.message,
-      });
-    }
-  }
-
-  @Get('project/:project_id')
-  async getProjectEquipmentInfo(
-    @Res() res: Response,
-    @Param('project_id') project_id: string
-  ) {
-    try {
-      const result = await this.equipmentService.getProjectEquipmentInfo(
-        project_id
+      const result = await this.chargeService.getChargeInfo(
+        user_id,
+        equipment_id
       );
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
@@ -119,12 +79,34 @@ export class EquipmentController {
   }
 
   @Get('user/:user_id')
-  async getUserEquipmentInfo(
+  async getChargeUserInfo(
     @Res() res: Response,
     @Param('user_id') user_id: string
   ) {
     try {
-      const result = await this.equipmentService.getUserEquipmentInfo(user_id);
+      const result = await this.chargeService.getChargeUserInfo(user_id);
+      return res.status(HttpStatus.OK).json({
+        status: HttpStatus.OK,
+        message: 'success',
+        data: result,
+      });
+    } catch (e) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        status: HttpStatus.BAD_REQUEST,
+        message: e.message,
+      });
+    }
+  }
+
+  @Get('equipment/:equipment_id')
+  async getChargeProjectInfo(
+    @Res() res: Response,
+    @Param('equipment_id') equipment_id: string
+  ) {
+    try {
+      const result = await this.chargeService.getChargeEquipmentInfo(
+        equipment_id
+      );
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',
@@ -139,12 +121,12 @@ export class EquipmentController {
   }
 
   @Put()
-  async updateEquipment(
+  async updateCharge(
     @Res() res: Response,
-    @Body() equipmentInfo: UpdateEquipmentDto
+    @Body() chargeInfo: UpdateChargeDto
   ) {
     try {
-      const result = await this.equipmentService.updateEquipment(equipmentInfo);
+      const result = await this.chargeService.updateCharge(chargeInfo);
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',
@@ -158,13 +140,17 @@ export class EquipmentController {
     }
   }
 
-  @Delete('/:equipment_id')
-  async deleteEquipment(
+  @Delete('/:user_id/:equipment_id')
+  async deleteCharge(
     @Res() res: Response,
-    @Param('equipment_id') equipment_id: string
+    @Param() user_id: string,
+    equipment_id: string
   ) {
     try {
-      const result = await this.equipmentService.deleteEquipment(equipment_id);
+      const result = await this.chargeService.deleteCharge(
+        user_id,
+        equipment_id
+      );
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',

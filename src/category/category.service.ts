@@ -49,6 +49,22 @@ export class CategoryService {
   }
 
   /**
+   * 유저 상세 정보 조회
+   * @param category_id
+   * @returns
+   */
+  async getCategoryInfo(category_id: string) {
+    try {
+      const category = await this.categoryRepository.findOneOrFail({
+        where: { category_id: category_id },
+      });
+      return category;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
    * 카테고리 정보 수정
    * --
    * @param categoryInfo
@@ -80,22 +96,6 @@ export class CategoryService {
 
       const result = await this.categoryRepository.delete({ category_id });
       return result;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  /**
-   * 유저 상세 정보 조회
-   * @param category_id
-   * @returns
-   */
-  async getCategoryInfo(category_id: string) {
-    try {
-      const category = await this.categoryRepository.findOneOrFail({
-        where: { category_id: category_id },
-      });
-      return category;
     } catch (error) {
       throw error;
     }
