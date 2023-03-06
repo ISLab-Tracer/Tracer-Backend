@@ -9,3 +9,4 @@ export * from './project_member.entity';
 export * from './team.entity';
 export * from './trace.entity';
 export * from './user.entity';
+export * from './signup.entity';

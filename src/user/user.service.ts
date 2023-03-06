@@ -184,14 +184,14 @@ export class UserService {
    * @param user_email
    * @returns
    */
-  async checkEmail(user_email: string): Promise<boolean> {
+  async checkEmail(user_email: string): Promise<User | boolean> {
     try {
       const result = await this.userRepository.findOne({
         where: { user_email },
       });
 
       if (result) {
-        return true;
+        return result;
       }
 
       return false;
