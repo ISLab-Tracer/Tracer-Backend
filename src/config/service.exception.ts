@@ -8,11 +8,24 @@ import {
   ErrorCode,
 } from './error.code';
 
+/**
+ * 유효하지 않은 호출 오류 예외처리
+ * --
+ * @param message
+ * @returns
+ */
 export const EntityBadRequestException = (
   message?: string
 ): ServiceException => {
   return new ServiceException(ENTITY_BAD_REQUEST, message);
 };
+
+/**
+ * 계정관련 오류 예외처리
+ * --
+ * @param message
+ * @returns
+ */
 export const AuthDuplicationRequestException = (
   message?: string
 ): ServiceException => {
