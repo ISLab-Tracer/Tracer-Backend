@@ -19,6 +19,8 @@ import { VerificationModule } from './verification/verification.module';
 import { ChargeModule } from './charge/charge.module';
 import { TraceModule } from './trace/trace.module';
 import { LocationModule } from './location/location.module';
+import { ServiceExceptionToHttpExceptionFilter } from './entity';
+import { APP_FILTER } from '@nestjs/core';
 import { ProjectMemberModule } from './project_member/project_member.module';
 
 @Module({
@@ -63,6 +65,11 @@ import { ProjectMemberModule } from './project_member/project_member.module';
     ProjectMemberModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: ServiceExceptionToHttpExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}

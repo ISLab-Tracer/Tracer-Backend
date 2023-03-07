@@ -21,8 +21,8 @@ export class TeamService {
     try {
       const result = await this.teamRepository.save(teamInfo);
       return result;
-    } catch (error) {
-      throw error;
+    } catch (e) {
+      throw e;
     }
   }
 
