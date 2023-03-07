@@ -19,6 +19,7 @@ import { VerificationModule } from './verification/verification.module';
 import { ChargeModule } from './charge/charge.module';
 import { TraceModule } from './trace/trace.module';
 import { LocationModule } from './location/location.module';
+import { ProjectMemberModule } from './project_member/project_member.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { LocationModule } from './location/location.module';
     ChargeModule,
     TraceModule,
     LocationModule,
+    ProjectMemberModule,
   ],
   controllers: [],
   providers: [],
