@@ -21,11 +21,6 @@ jobs:
       - name: Source Update
         run: cd ${{ secrets.WORKING_DIRECTORY }} && git pull
 
-      - name: Use Node.js ${{ matrix.node-version}}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-
       - name: Module Install - npm install
         run: npm install
 
@@ -36,4 +31,4 @@ jobs:
         run: pm2 delete all
 
       - name: Process Start
-        run: pm2 start deploy.json
+        run: pm2 start ./deploy.json
