@@ -72,7 +72,7 @@ export class AuthService {
       );
 
       if (!mail) {
-        throw new Error('?');
+        throw AuthSignupFailureException();
       }
       const result = await this.signupRepository.save(signup);
       return result;
