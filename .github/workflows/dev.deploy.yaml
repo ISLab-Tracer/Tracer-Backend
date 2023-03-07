@@ -9,26 +9,19 @@ on:
 
 jobs:
   deploy:
-    runs-on: [self-hosted, linux, x64, islab-tracer-backend]
-
-    strategy:
-      matrix:
-        node-version: [18.x]
+    runs-on: [self-hosted, linux, x64, islab-tracer]
 
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Source Update
-        run: git pull
-
-      - name: Module Install - npm install
-        run: npm ci
-
-      - name: Build - npm build
-        run: npm run build
-
-      - name: Process Clean
-        run: pm2 delete all
-
-      - name: Process Start
-        run: pm2 start ./deploy.json
+      - name: SSH and deploy node app
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            cd ~/Tracer-Backend
+            git pull origin develop
+            pm2 delete all
+            npm run deploy
