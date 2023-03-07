@@ -9,7 +9,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: [self-hosted, linux, x64, islab-tracer]
+    runs-on: [self-hosted, Linux, X64, islab-tracer]
 
     steps:
       - name: SSH and deploy node app
