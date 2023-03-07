@@ -1,5 +1,6 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
+import { EntityBadRequestException } from 'src/config/service.exception';
 
 @Injectable()
 export class VerificationService {
@@ -21,7 +22,7 @@ export class VerificationService {
       });
       const { accepted } = result;
       if (accepted.length === 0) {
-        throw new Error('이메일 전송에 실패했습니다.');
+        throw EntityBadRequestException();
       }
 
       return true;

@@ -1,18 +1,26 @@
-import { RequestSigninDto } from './dto/request-signin.dto';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { UpdateLoginDto } from './../login/dto/update-login.dto';
-import { CreateUserDto } from './../user/dto/create-user.dto';
-import { LoginService } from './../login/login.service';
-import { SignUp, SIGNUP_STATUS } from './../entity/signup.entity';
+import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
+import { isBoolean, isObject } from 'class-validator';
+import {
+  AuthDuplicationRequestException,
+  AuthNotFoundRequestException,
+  AuthSigninDuplicationRequestException,
+  AuthSignupDuplicationRequestException,
+  AuthSignupFailureException,
+  EntityBadRequestException,
+} from 'src/config/service.exception';
+import { Repository } from 'typeorm';
+import { SignUp, SIGNUP_STATUS } from './../entity/signup.entity';
+import { UpdateLoginDto } from './../login/dto/update-login.dto';
+import { LoginService } from './../login/login.service';
+import { CreateUserDto } from './../user/dto/create-user.dto';
+import { UserService } from './../user/user.service';
+import { VerificationService } from './../verification/verification.service';
 import { CreateSignInDto } from './dto/create-signin.dto';
 import { CreateSignupDto } from './dto/create-signup.dto';
-import { VerificationService } from './../verification/verification.service';
-import { UserService } from './../user/user.service';
-import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { isBoolean, isObject } from 'class-validator';
-import { JwtService } from '@nestjs/jwt';
+import { RequestSigninDto } from './dto/request-signin.dto';
 
 @Injectable()
 export class AuthService {
@@ -36,14 +44,14 @@ export class AuthService {
       const { user_email, user_nm } = signupInfo;
       const check = await this.userService.checkEmail(user_email);
       if (isObject(check)) {
-        throw new Error('이미 가입된 이메일입니다.');
+        throw EntityBadRequestException();
       }
 
       const check2 = await this.signupRepository.findOne({
         where: { signup_mail: user_email },
       });
       if (check2) {
-        throw new Error('이미 가입요청된 이메일입니다.');
+        throw AuthDuplicationRequestException();
       }
 
       const signup = await this.signupRepository.save({
@@ -52,7 +60,7 @@ export class AuthService {
       });
 
       if (!signup) {
-        throw new Error('이미 가입요청된 이메일입니다.');
+        throw AuthSignupDuplicationRequestException();
       }
 
       const { signup_id } = signup;
@@ -79,14 +87,14 @@ export class AuthService {
       const { user_email } = signinInfo;
       const user = await this.userService.checkEmail(user_email);
       if (isBoolean(user)) {
-        throw new Error('존재하지 않는 이메일입니다.');
+        throw AuthNotFoundRequestException();
       }
 
       const { user_id } = user;
 
       const check2 = await this.loginService.checkLogin(user_id);
       if (check2) {
-        throw new Error('이미 로그인 요청된 이메일입니다.');
+        throw AuthSigninDuplicationRequestException();
       }
 
       const login = await this.loginService.createLogin(user);
@@ -146,7 +154,7 @@ export class AuthService {
     try {
       const user = await this.userService.createUser(userInfo);
       if (!user) {
-        throw new Error('회원 등록에 실패했습니다.');
+        throw AuthSignupFailureException();
       }
 
       await this.signupRepository.update(

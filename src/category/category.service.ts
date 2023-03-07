@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EntityBadRequestException } from 'src/config/service.exception';
 import { Category } from 'src/entity/category.entity';
 import { Repository } from 'typeorm';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto';
@@ -24,13 +25,13 @@ export class CategoryService {
         where: { category_id: category_id },
       });
       if (check) {
-        throw new Error('Category is Invalid');
+        throw EntityBadRequestException();
       }
 
       const result = await this.categoryRepository.save(categoryInfo);
       return result;
-    } catch (error) {
-      throw error;
+    } catch (e) {
+      throw e;
     }
   }
 
@@ -43,13 +44,13 @@ export class CategoryService {
     try {
       const result = await this.categoryRepository.find();
       return result;
-    } catch (error) {
-      throw error;
+    } catch (e) {
+      throw e;
     }
   }
 
   /**
-   * 유저 상세 정보 조회
+   * 카테고리 상세 정보 조회
    * @param category_id
    * @returns
    */
@@ -59,8 +60,8 @@ export class CategoryService {
         where: { category_id: category_id },
       });
       return category;
-    } catch (error) {
-      throw error;
+    } catch (e) {
+      throw e;
     }
   }
 
@@ -79,8 +80,8 @@ export class CategoryService {
         updateInfo
       );
       return result;
-    } catch (error) {
-      throw error;
+    } catch (e) {
+      throw e;
     }
   }
 
@@ -96,8 +97,8 @@ export class CategoryService {
 
       const result = await this.categoryRepository.delete({ category_id });
       return result;
-    } catch (error) {
-      throw error;
+    } catch (e) {
+      throw e;
     }
   }
 }

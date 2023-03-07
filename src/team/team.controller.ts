@@ -26,8 +26,8 @@ export class TeamController {
         data: result,
         message: 'Success',
       });
-    } catch (error) {
-      console.log(error);
+    } catch (e) {
+      console.log(e);
       return res.status(HttpStatus.BAD_REQUEST).json({
         status: HttpStatus.BAD_REQUEST,
         message: 'Failure',
@@ -44,8 +44,8 @@ export class TeamController {
         data: result,
         message: 'Success',
       });
-    } catch (error) {
-      console.log(error);
+    } catch (e) {
+      console.log(e);
       return res.status(HttpStatus.BAD_REQUEST).json({
         status: HttpStatus.BAD_REQUEST,
         message: 'Failure',

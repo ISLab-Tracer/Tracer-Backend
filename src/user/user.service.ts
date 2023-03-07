@@ -6,6 +6,7 @@ import { User, USER_DIVIDE } from 'src/entity';
 import { Repository } from 'typeorm';
 import { ChangePasswordDto, CreateUserDto, UpdateUserDto } from './dto';
 import * as argon from 'argon2';
+import { EntityBadRequestException } from 'src/config/service.exception';
 
 @Injectable()
 export class UserService {
@@ -14,7 +15,7 @@ export class UserService {
   ) {}
 
   /**
-   * 유저 정보 생성
+   * 회원 정보 생성
    * --
    * @param userInfo
    * @returns
@@ -27,7 +28,7 @@ export class UserService {
       });
 
       if (check) {
-        throw new Error('User Email is Invalid');
+        EntityBadRequestException();
       }
 
       const hash = await argon.hash(user_password);
@@ -45,7 +46,7 @@ export class UserService {
   }
 
   /**
-   * 유저 정보 임시 생성
+   * 회원 정보 임시 생성
    * --
    * @param userInfo
    * @returns
@@ -63,7 +64,7 @@ export class UserService {
   }
 
   /**
-   * 유저 전체 목록 조회
+   * 회원 전체 목록 조회
    * --
    * @returns
    */
@@ -77,7 +78,7 @@ export class UserService {
   }
 
   /**
-   * 팀별 유저 정보 조회
+   * 팀별 회원 정보 조회
    * --
    * @param team_id
    * @returns
@@ -92,7 +93,7 @@ export class UserService {
   }
 
   /**
-   * 유저 정보 수정
+   * 회원 정보 수정
    * --
    * @param userInfo
    */
@@ -111,7 +112,7 @@ export class UserService {
   }
 
   /**
-   * 유저 정보 삭제
+   * 회원 정보 삭제
    * --
    * @param user_id
    * @returns
@@ -132,7 +133,7 @@ export class UserService {
   }
 
   /**
-   * 유저 상세 정보 조회
+   * 회원 상세 정보 조회
    * @param user_id
    * @returns
    */
@@ -148,7 +149,7 @@ export class UserService {
   }
 
   /**
-   * 유저 비밀번호 확인 및 수정
+   * 회원 비밀번호 확인 및 수정
    * --
    * @param userInfo
    */
