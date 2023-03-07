@@ -7,6 +7,10 @@ on:
   push:
     branches: [develop]
 
+defaults:
+  run:
+    working-directory: ${{ secrets.WORKING_DIRECTORY }}
+
 jobs:
   deploy:
     runs-on: [self-hosted, linux, x64, islab-tracer-backend]
@@ -19,7 +23,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Source Update
-        run: cd ${{ secrets.WORKING_DIRECTORY }} && git pull
+        run: git pull
 
       - name: Module Install - npm install
         run: npm install
