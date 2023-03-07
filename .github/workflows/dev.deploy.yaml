@@ -10,7 +10,6 @@ on:
 jobs:
   deploy:
     runs-on: [self-hosted, linux, x64, islab-tracer-backend]
-    working-directory: /home/islab_tracer/Tracer-Backend
 
     strategy:
       matrix:
@@ -20,7 +19,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Source Update
-        run: git pull
+        run: cd ${{ secrets.WORKING_DIRECTORY }} && git pull
 
       - name: Use Node.js ${{ matrix.node-version}}
         uses: actions/setup-node@v1
