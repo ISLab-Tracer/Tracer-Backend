@@ -24,7 +24,7 @@ export class ProjectMember {
   created_at: Date;
 
   @UpdateDateColumn()
-  update_at: Date;
+  modified_at: Date;
 
   @ManyToOne(() => User, (user) => user.user_id, {
     onDelete: 'CASCADE',

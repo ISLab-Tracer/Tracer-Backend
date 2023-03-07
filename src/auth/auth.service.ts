@@ -54,7 +54,7 @@ export class AuthService {
         throw AuthDuplicationRequestException();
       }
 
-      const signup = await this.signupRepository.save({
+      const signup = this.signupRepository.create({
         signup_mail: user_email,
         signup_nm: user_nm,
       });
@@ -65,12 +65,16 @@ export class AuthService {
 
       const { signup_id } = signup;
 
-      const result = await this.verificationService.signup(
+      const mail = await this.verificationService.signup(
         user_email,
         user_nm,
         signup_id
       );
 
+      if (!mail) {
+        throw new Error('?');
+      }
+      const result = await this.signupRepository.save(signup);
       return result;
     } catch (e) {
       throw e;
