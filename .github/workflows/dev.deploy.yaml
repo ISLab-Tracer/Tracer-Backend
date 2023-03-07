@@ -9,7 +9,8 @@ on:
 
 jobs:
   deploy:
-    runs-on: [self-hosted, linux, x64, islab-tracer]
+    runs-on: [self-hosted, linux, x64, islab-tracer-backend]
+    working-directory: /home/islab_tracer/Tracer-Backend
 
     strategy:
       matrix:
@@ -31,3 +32,9 @@ jobs:
 
       - name: Build - npm build
         run: npm run build
+
+      - name: Process Clean
+        run: pm2 delete all
+
+      - name: Process Start
+        run: pm2 start deploy.json
