@@ -25,26 +25,10 @@ jobs:
         run: npm ci
 
       - name: Build - npm build
-        env:
-          CI: ''
-          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-          DATABASE_USER: ${{ secrets.DATABASE_HOST }}
-          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
-          ENTITY_PATH: ${{ secrets.ENTITY_PATH }}
-          FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
-          PORT: ${{ secrets.PORT }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          EMAIL_AUTH_ADDRESS: ${{ secrets.EMAIL_AUTH_ADDRESS }}
-          EMAIL_AUTH_PASSWORD: ${{ secrets.EMAIL_AUTH_PASSWORD }}
-          EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
-          EMAIL_FROM_USERNAME: ${{ secrets.EMAIL_FROM_USERNAME }}
-          TZ: Asia/Seoul
-          NODE_ENV: production
         run: npm run build
 
       - name: Process Clean
         run: pm2 delete all
 
       - name: Process Start
-        run: pm2 start ./dist/main.js --name ISLab-Tracer-Backend
+        run: pm2 start ./deploy.json
