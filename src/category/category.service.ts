@@ -28,7 +28,8 @@ export class CategoryService {
         throw EntityBadRequestException();
       }
 
-      const result = await this.categoryRepository.save(categoryInfo);
+      const test = await this.categoryRepository.create(categoryInfo);
+      const result = await this.categoryRepository.save(test);
       return result;
     } catch (e) {
       throw e;

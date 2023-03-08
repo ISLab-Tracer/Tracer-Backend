@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EntityBadRequestException } from 'src/config/service.exception';
 import { Handover } from 'src/entity';
 import { Repository } from 'typeorm';
 import { CreateHandoverDto, UpdateHandoverDto } from './dto';
@@ -18,9 +19,15 @@ export class HandoverService {
    */
   async createHandover(handoverInfo: CreateHandoverDto) {
     try {
-      const test = await this.handoverRepository.create({
-        ...handoverInfo,
+      const { handover_id } = handoverInfo;
+      const check = await this.handoverRepository.findOne({
+        where: { handover_id },
       });
+      if (check) {
+        throw EntityBadRequestException();
+      }
+
+      const test = await this.handoverRepository.create(handoverInfo);
       const result = await this.handoverRepository.save(test);
       return result;
     } catch (e) {

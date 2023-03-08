@@ -24,9 +24,8 @@ export class UserService {
     try {
       const { user_email, user_password } = userInfo;
       const check = await this.userRepository.findOne({
-        where: { user_email: user_email },
+        where: { user_email },
       });
-
       if (check) {
         EntityBadRequestException();
       }

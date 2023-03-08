@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EntityBadRequestException } from 'src/config/service.exception';
 import { Login } from 'src/entity';
 import { Repository } from 'typeorm';
 import { CreateLoginDto, UpdateLoginDto } from './dto';
@@ -18,6 +19,14 @@ export class LoginService {
    */
   async createLogin(loginInfo: CreateLoginDto) {
     try {
+      const { login_id } = loginInfo;
+      const check = await this.loginRepository.findOne({
+        where: { login_id },
+      });
+      if (check) {
+        throw EntityBadRequestException();
+      }
+
       const login_duration = new Date();
       login_duration.setMinutes(login_duration.getMinutes() + 5);
       const test = await this.loginRepository.create({
