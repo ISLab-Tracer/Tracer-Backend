@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EntityBadRequestException } from 'src/config/service.exception';
 import { Trace } from 'src/entity';
 import { Repository } from 'typeorm';
 import { CreateTraceDto, UpdateTraceDto } from './dto';
@@ -19,6 +20,14 @@ export class TraceService {
    */
   async createTrace(traceInfo: CreateTraceDto) {
     try {
+      const { trace_id } = traceInfo;
+      const check = await this.traceRepository.findOne({
+        where: { trace_id },
+      });
+      if (check) {
+        throw EntityBadRequestException();
+      }
+
       const test = await this.traceRepository.create(traceInfo);
       const result = await this.traceRepository.save(test);
       return result;

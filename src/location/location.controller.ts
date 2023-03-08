@@ -30,7 +30,6 @@ export class LocationController {
         message: 'Success',
       });
     } catch (e) {
-      console.log(e);
       return res.status(HttpStatus.BAD_REQUEST).json({
         status: HttpStatus.BAD_REQUEST,
         message: 'Failure',
@@ -48,7 +47,6 @@ export class LocationController {
         message: 'Success',
       });
     } catch (e) {
-      console.log(e);
       return res.status(HttpStatus.BAD_REQUEST).json({
         status: HttpStatus.BAD_REQUEST,
         message: 'Failure',

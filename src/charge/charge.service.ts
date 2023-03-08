@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EntityBadRequestException } from 'src/config/service.exception';
 import { Charge } from 'src/entity';
 import { Repository } from 'typeorm';
 import { CreateChargeDto, UpdateChargeDto } from './dto';
@@ -19,6 +20,14 @@ export class ChargeService {
    */
   async createCharge(chargeInfo: CreateChargeDto) {
     try {
+      const { user_id, equipment_id } = chargeInfo;
+      const check = await this.chargeRepository.findOne({
+        where: { user_id, equipment_id },
+      });
+      if (check) {
+        throw EntityBadRequestException();
+      }
+
       const test = await this.chargeRepository.create(chargeInfo);
       const result = await this.chargeRepository.save(test);
       return result;

@@ -26,7 +26,7 @@ export class VerificationService {
       }
 
       return true;
-    } catch (error) {
+    } catch (e) {
       return false;
     }
   }

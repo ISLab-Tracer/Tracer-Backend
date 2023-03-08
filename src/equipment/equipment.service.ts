@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EntityBadRequestException } from 'src/config/service.exception';
 import { Equipment } from 'src/entity';
 import { Repository } from 'typeorm';
 import { CreateEquipmentDto, UpdateEquipmentDto } from './dto';
@@ -19,6 +20,14 @@ export class EquipmentService {
    */
   async createEquipment(equipmentInfo: CreateEquipmentDto) {
     try {
+      const { equipment_id } = equipmentInfo;
+      const check = await this.equipmentRepository.findOne({
+        where: { equipment_id },
+      });
+      if (check) {
+        throw EntityBadRequestException();
+      }
+
       const test = await this.equipmentRepository.create(equipmentInfo);
       const result = await this.equipmentRepository.save(test);
       return result;

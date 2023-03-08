@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EntityBadRequestException } from 'src/config/service.exception';
 import { Team } from 'src/entity';
 import { Repository } from 'typeorm';
 import { CreateTeamDto, UpdateTeamDto } from './dto';
@@ -19,6 +20,14 @@ export class TeamService {
    */
   async createTeam(teamInfo: CreateTeamDto) {
     try {
+      const { team_id } = teamInfo;
+      const check = await this.teamRepository.findOne({
+        where: { team_id },
+      });
+      if (check) {
+        throw EntityBadRequestException();
+      }
+
       const result = await this.teamRepository.save(teamInfo);
       return result;
     } catch (e) {

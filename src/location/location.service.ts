@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EntityBadRequestException } from 'src/config/service.exception';
 import { Location } from 'src/entity';
 import { Repository } from 'typeorm';
 import { CreateLocationDto, UpdateLocationDto } from './dto';
@@ -19,6 +20,14 @@ export class LocationService {
    */
   async createLocation(locationInfo: CreateLocationDto) {
     try {
+      const { location_id } = locationInfo;
+      const check = await this.locationRepository.findOne({
+        where: { location_id },
+      });
+      if (check) {
+        throw EntityBadRequestException();
+      }
+
       const test = await this.locationRepository.create(locationInfo);
       const result = await this.locationRepository.save(test);
       return result;

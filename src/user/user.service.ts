@@ -1,12 +1,12 @@
-import { USER_RANK } from './../entity/user.entity';
-import { CreateSignupDto } from './../auth/dto/create-signup.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
-import { User, USER_DIVIDE } from 'src/entity';
-import { Repository } from 'typeorm';
-import { ChangePasswordDto, CreateUserDto, UpdateUserDto } from './dto';
+import { InjectRepository } from '@nestjs/typeorm';
 import * as argon from 'argon2';
 import { EntityBadRequestException } from 'src/config/service.exception';
+import { User } from 'src/entity';
+import { Repository } from 'typeorm';
+import { CreateSignupDto } from './../auth/dto/create-signup.dto';
+import { USER_RANK } from './../entity/user.entity';
+import { ChangePasswordDto, CreateUserDto, UpdateUserDto } from './dto';
 
 @Injectable()
 export class UserService {
@@ -24,9 +24,8 @@ export class UserService {
     try {
       const { user_email, user_password } = userInfo;
       const check = await this.userRepository.findOne({
-        where: { user_email: user_email },
+        where: { user_email },
       });
-
       if (check) {
         EntityBadRequestException();
       }
@@ -165,7 +164,6 @@ export class UserService {
           updateInfo.user_pre_password
         )
       ) {
-        console.log('ccc');
         const newPassword = await argon.hash(updateInfo.user_new_password);
         const result = await this.userRepository.update(
           { user_id },
@@ -191,7 +189,6 @@ export class UserService {
       const result = await this.userRepository.findOne({
         where: { user_email },
       });
-
       if (result) {
         return result;
       }
