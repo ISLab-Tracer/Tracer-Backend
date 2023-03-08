@@ -52,7 +52,6 @@ export class VerificationService {
   async signup(to: string, name: string, signup_id: string) {
     try {
       const signup_url = `${process.env.FRONTEND_URL}/register/${signup_id}`;
-
       const result = await this._send(
         [to],
         'ISLab Tracer 회원가입',
