@@ -12,6 +12,7 @@ import {
   EntityBadRequestException,
 } from 'src/config/service.exception';
 import { Repository } from 'typeorm';
+import { v4 } from 'uuid';
 import { SignUp, SIGNUP_STATUS } from './../entity/signup.entity';
 import { UpdateLoginDto } from './../login/dto/update-login.dto';
 import { LoginService } from './../login/login.service';
@@ -55,6 +56,7 @@ export class AuthService {
       }
 
       const signup = this.signupRepository.create({
+        signup_id: v4(),
         signup_mail: user_email,
         signup_nm: user_nm,
       });
@@ -165,6 +167,11 @@ export class AuthService {
         { signup_mail: userInfo.user_email },
         { signup_status: SIGNUP_STATUS.DONE }
       );
+
+      await this.loginService.createLogin({
+        user_id: user.user_id,
+        login_status: true,
+      });
 
       delete user.user_password;
       const access_token = await this.generateToken(user.user_id, 'NORMAL');
