@@ -21,11 +21,13 @@ export class TeamService {
   async createTeam(teamInfo: CreateTeamDto) {
     try {
       const { team_id } = teamInfo;
-      const check = await this.teamRepository.findOne({
-        where: { team_id },
-      });
-      if (check) {
-        throw EntityBadRequestException();
+      if (team_id) {
+        const check = await this.teamRepository.findOne({
+          where: { team_id },
+        });
+        if (check) {
+          throw EntityBadRequestException();
+        }
       }
 
       const result = await this.teamRepository.save(teamInfo);

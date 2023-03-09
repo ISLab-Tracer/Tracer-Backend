@@ -20,15 +20,17 @@ export class EquipmentService {
    */
   async createEquipment(equipmentInfo: CreateEquipmentDto) {
     try {
-      const { equipment_id } = equipmentInfo;
-      const check = await this.equipmentRepository.findOne({
-        where: { equipment_id },
-      });
-      if (check) {
-        throw EntityBadRequestException();
+      if (equipmentInfo.equipment_id) {
+        const { equipment_id } = equipmentInfo;
+        const check = await this.equipmentRepository.findOne({
+          where: { equipment_id },
+        });
+        if (check) {
+          throw EntityBadRequestException();
+        }
       }
 
-      const test = await this.equipmentRepository.create(equipmentInfo);
+      const test = this.equipmentRepository.create(equipmentInfo);
       const result = await this.equipmentRepository.save(test);
       return result;
     } catch (e) {

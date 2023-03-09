@@ -20,12 +20,14 @@ export class ProjectService {
    */
   async createProject(projectInfo: CreateProjectDto) {
     try {
-      const { project_id } = projectInfo;
-      const check = await this.projectRepository.findOne({
-        where: { project_id },
-      });
-      if (check) {
-        throw EntityBadRequestException();
+      if (projectInfo.project_id) {
+        const { project_id } = projectInfo;
+        const check = await this.projectRepository.findOne({
+          where: { project_id },
+        });
+        if (check) {
+          throw EntityBadRequestException();
+        }
       }
 
       const result = await this.projectRepository.save(projectInfo);

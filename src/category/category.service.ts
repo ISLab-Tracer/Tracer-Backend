@@ -20,15 +20,17 @@ export class CategoryService {
    */
   async createCategory(categoryInfo: CreateCategoryDto) {
     try {
-      const { category_id } = categoryInfo;
-      const check = await this.categoryRepository.findOne({
-        where: { category_id: category_id },
-      });
-      if (check) {
-        throw EntityBadRequestException();
+      if (categoryInfo.category_id) {
+        const { category_id } = categoryInfo;
+        const check = await this.categoryRepository.findOne({
+          where: { category_id: category_id },
+        });
+        if (check) {
+          throw EntityBadRequestException();
+        }
       }
 
-      const test = await this.categoryRepository.create(categoryInfo);
+      const test = this.categoryRepository.create(categoryInfo);
       const result = await this.categoryRepository.save(test);
       return result;
     } catch (e) {
