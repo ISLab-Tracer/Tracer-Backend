@@ -20,15 +20,17 @@ export class TraceService {
    */
   async createTrace(traceInfo: CreateTraceDto) {
     try {
-      const { trace_id } = traceInfo;
-      const check = await this.traceRepository.findOne({
-        where: { trace_id },
-      });
-      if (check) {
-        throw EntityBadRequestException();
+      if (traceInfo.trace_id) {
+        const { trace_id } = traceInfo;
+        const check = await this.traceRepository.findOne({
+          where: { trace_id },
+        });
+        if (check) {
+          throw EntityBadRequestException();
+        }
       }
 
-      const test = await this.traceRepository.create(traceInfo);
+      const test = this.traceRepository.create(traceInfo);
       const result = await this.traceRepository.save(test);
       return result;
     } catch (e) {

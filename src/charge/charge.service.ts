@@ -21,11 +21,13 @@ export class ChargeService {
   async createCharge(chargeInfo: CreateChargeDto) {
     try {
       const { user_id, equipment_id } = chargeInfo;
-      const check = await this.chargeRepository.findOne({
-        where: { user_id, equipment_id },
-      });
-      if (check) {
-        throw EntityBadRequestException();
+      if (user_id && equipment_id) {
+        const check = await this.chargeRepository.findOne({
+          where: { user_id, equipment_id },
+        });
+        if (check) {
+          throw EntityBadRequestException();
+        }
       }
 
       const test = await this.chargeRepository.create(chargeInfo);
