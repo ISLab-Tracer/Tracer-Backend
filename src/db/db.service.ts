@@ -14,7 +14,7 @@ export class DbService implements TypeOrmOptionsFactory {
       password: this.config.get('DATABASE_PASSWORD'),
       port: this.config.get('DATABASE_PORT'),
       database: this.config.get('DATABASE_NAME'),
-      entities: [this.config.get('ENTITY_PATH')],
+      autoLoadEntities: true,
     };
   }
 }
