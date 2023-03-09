@@ -67,4 +67,22 @@ export class VerificationService {
       throw e;
     }
   }
+
+  async completeSignup(to: string, name: string) {
+    try {
+      const url = `${process.env.FRONTEND_URL}/login`;
+      const result = await this._send(
+        [to],
+        'ISLab Tracer 회원가입 완료',
+        'singupcomplete.ejs',
+        {
+          name,
+          singupcomplete_url: url,
+        }
+      );
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
 }
