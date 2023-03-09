@@ -20,12 +20,14 @@ export class LocationService {
    */
   async createLocation(locationInfo: CreateLocationDto) {
     try {
-      const { location_id } = locationInfo;
-      const check = await this.locationRepository.findOne({
-        where: { location_id },
-      });
-      if (check) {
-        throw EntityBadRequestException();
+      if (locationInfo.location_id) {
+        const { location_id } = locationInfo;
+        const check = await this.locationRepository.findOne({
+          where: { location_id },
+        });
+        if (check) {
+          throw EntityBadRequestException();
+        }
       }
 
       const test = await this.locationRepository.create(locationInfo);

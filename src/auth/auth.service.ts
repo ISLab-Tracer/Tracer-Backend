@@ -79,6 +79,7 @@ export class AuthService {
       const result = await this.signupRepository.save(signup);
       return result;
     } catch (e) {
+      console.log(e);
       throw e;
     }
   }
@@ -172,6 +173,17 @@ export class AuthService {
         user_id: user.user_id,
         login_status: true,
       });
+
+      const { user_nm, user_rank, user_email } = user;
+      const _user = user_nm + ' ' + this.userService.getUserRank(user_rank);
+      const completeMail = await this.verificationService.completeSignup(
+        user_email,
+        _user
+      );
+
+      if (!completeMail) {
+        throw AuthSignupFailureException();
+      }
 
       delete user.user_password;
       const access_token = await this.generateToken(user.user_id, 'NORMAL');
