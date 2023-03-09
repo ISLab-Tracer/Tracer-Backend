@@ -19,12 +19,14 @@ export class LoginService {
    */
   async createLogin(loginInfo: CreateLoginDto) {
     try {
-      const { login_id } = loginInfo;
-      const check = await this.loginRepository.findOne({
-        where: { login_id },
-      });
-      if (check) {
-        throw EntityBadRequestException();
+      if (loginInfo.login_id) {
+        const { login_id } = loginInfo;
+        const check = await this.loginRepository.findOne({
+          where: { login_id },
+        });
+        if (check) {
+          throw EntityBadRequestException();
+        }
       }
 
       const login_duration = new Date();
