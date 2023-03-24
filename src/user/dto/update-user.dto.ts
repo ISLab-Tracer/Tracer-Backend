@@ -12,4 +12,8 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   user_nm?: string;
+
+  @IsString()
+  @IsOptional()
+  user_tel?: string;
 }

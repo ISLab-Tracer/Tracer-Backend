@@ -251,7 +251,7 @@ export class AuthService {
     const secret = this.config.get('JWT_SECRET');
 
     const token = await this.jwt.signAsync(payload, {
-      expiresIn: '24h',
+      expiresIn: '14d',
       secret: secret,
     });
 
@@ -269,7 +269,10 @@ export class AuthService {
   async verify(authorization: string) {
     try {
       const token = authorization.replace('Bearer ', '');
-      const result = this.jwt.decode(token);
+      const secret = this.config.get('JWT_SECRET');
+      const result = await this.jwt.verifyAsync(token, {
+        secret,
+      });
       return result;
     } catch (e) {
       throw e;
