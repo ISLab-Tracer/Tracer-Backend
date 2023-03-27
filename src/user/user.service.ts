@@ -139,7 +139,8 @@ export class UserService {
   async getUserInfo(user_id: string) {
     try {
       const user = await this.userRepository.findOneOrFail({
-        where: { user_id: user_id },
+        where: { user_id },
+        relations: ['team'],
       });
       return user;
     } catch (e) {

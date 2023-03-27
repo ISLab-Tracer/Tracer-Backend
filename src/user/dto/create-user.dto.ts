@@ -25,4 +25,8 @@ export class CreateUserDto {
   @IsEnum(USER_DIVIDE)
   @IsOptional()
   user_divide?: USER_DIVIDE;
+
+  @IsString()
+  @IsOptional()
+  user_tel?: string;
 }

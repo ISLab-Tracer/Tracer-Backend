@@ -49,6 +49,9 @@ export class User {
   @Column({ type: 'enum', enum: USER_RANK, default: USER_RANK.MASTER })
   user_rank: USER_RANK;
 
+  @Column()
+  user_tel: string;
+
   @CreateDateColumn()
   created_at: Date;
 

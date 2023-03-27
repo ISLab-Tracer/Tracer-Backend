@@ -2,7 +2,7 @@ import { RequestSigninDto } from './dto/request-signin.dto';
 import { CreateUserDto } from './../user/dto/create-user.dto';
 import { CreateSignInDto } from './dto/create-signin.dto';
 import { CreateSignupDto } from './dto/create-signup.dto';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import {
   Controller,
@@ -12,6 +12,7 @@ import {
   Body,
   Get,
   Param,
+  Req,
 } from '@nestjs/common';
 
 @Controller('auth')
@@ -113,6 +114,23 @@ export class AuthController {
   async requestSignin(@Res() res: Response, @Body() signin: RequestSigninDto) {
     try {
       const result = await this.authService.requestSignin(signin);
+      return res.status(HttpStatus.OK).json({
+        status: HttpStatus.OK,
+        message: 'success',
+        data: result,
+      });
+    } catch (e) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        status: HttpStatus.BAD_REQUEST,
+        message: e.message,
+      });
+    }
+  }
+
+  @Post('verify')
+  async verifyToken(@Req() req: Request, @Res() res: Response) {
+    try {
+      const result = await this.authService.verify(req.headers.authorization);
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',
