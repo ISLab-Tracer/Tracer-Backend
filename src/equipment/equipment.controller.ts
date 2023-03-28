@@ -1,4 +1,5 @@
 import {
+  Bind,
   Body,
   Controller,
   Delete,
@@ -8,8 +9,12 @@ import {
   Post,
   Put,
   Res,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
+import { multerMemoryOptions } from 'src/config/multer.options';
 import { CreateEquipmentDto, UpdateEquipmentDto } from './dto';
 import { EquipmentService } from './equipment.service';
 
@@ -18,12 +23,19 @@ export class EquipmentController {
   constructor(private equipmentService: EquipmentService) {}
 
   @Post('/')
+  @UseInterceptors(FileInterceptor('files', multerMemoryOptions))
+  @Bind(UploadedFile())
   async createEquipment(
+    file: Express.Multer.File,
     @Res() res: Response,
     @Body() equipmentInfo: CreateEquipmentDto
+    // @Req() req: Request
   ) {
     try {
-      const result = await this.equipmentService.createEquipment(equipmentInfo);
+      const result = await this.equipmentService.createEquipment(
+        equipmentInfo,
+        file
+      );
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'success',

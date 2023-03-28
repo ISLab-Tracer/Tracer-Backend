@@ -5,6 +5,7 @@ import { json, urlencoded } from 'express';
 import { join } from 'path';
 import { AppModule } from './app.module';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import * as fs from 'fs';
 import * as dotenv from 'dotenv';
 
 const whitelist = [
@@ -12,6 +13,13 @@ const whitelist = [
   'http://10.0.3.181',
   'https://tracer.islab.dev',
   'https://api-tracer.islab.dev',
+];
+
+const dirList = [
+  'uploads',
+  'uploads/equipment',
+  'uploads/users',
+  'uploads/trace',
 ];
 
 async function bootstrap() {
@@ -41,12 +49,20 @@ async function bootstrap() {
     })
   );
 
-  app.use(json({ limit: '50mb' }));
-  app.use(urlencoded({ limit: '50mb', extended: true }));
+  app.use(json({ limit: '500mb' }));
+  app.use(urlencoded({ limit: '500mb', extended: true }));
 
   app.useStaticAssets(join(__dirname, '..', 'assets'), {
     prefix: '/assets/',
   });
+
+  dirList.forEach((item) => {
+    if (!fs.existsSync(item)) {
+      // uploads 폴더가 존재하지 않을시, 생성합니다.
+      fs.mkdirSync(item);
+    }
+  });
+
   await app.listen(port);
 }
 bootstrap();

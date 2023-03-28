@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import path, { extname } from 'path';
+import { uploadFileURL } from 'src/config/multer.options';
 import { EntityBadRequestException } from 'src/config/service.exception';
 import { Equipment } from 'src/entity';
 import { Repository } from 'typeorm';
 import { CreateEquipmentDto, UpdateEquipmentDto } from './dto';
+import * as fs from 'fs';
 
 @Injectable()
 export class EquipmentService {
@@ -18,7 +21,10 @@ export class EquipmentService {
    * @param equipmentInfo
    * @returns
    */
-  async createEquipment(equipmentInfo: CreateEquipmentDto) {
+  async createEquipment(
+    equipmentInfo: CreateEquipmentDto,
+    file: Express.Multer.File
+  ) {
     try {
       if (equipmentInfo.equipment_id) {
         const { equipment_id } = equipmentInfo;
@@ -32,7 +38,10 @@ export class EquipmentService {
 
       const test = this.equipmentRepository.create(equipmentInfo);
       const result = await this.equipmentRepository.save(test);
-      return result;
+      const { equipment_id } = result;
+
+      const f = await this.uploadFile(file, equipment_id);
+      return { ...result, f };
     } catch (e) {
       throw e;
     }
@@ -148,6 +157,32 @@ export class EquipmentService {
       await this.equipmentRepository.findOneOrFail({ where: { equipment_id } });
       const result = await this.equipmentRepository.delete({ equipment_id });
       return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
+   * 파일 업로드
+   * --
+   * @param file
+   * @param equipment_id
+   * @returns
+   */
+  async uploadFile(file: Express.Multer.File, equipment_id: string) {
+    try {
+      const uploadFilePath = `uploads/equipment`;
+
+      //파일 이름
+      const fileName = `${equipment_id}.png`;
+      //파일 업로드 경로
+      const uploadPath =
+        __dirname + `/../../${uploadFilePath + '/' + fileName}`;
+
+      //파일 생성
+      fs.writeFileSync(uploadPath, file.buffer); // file.path 임시 파일 저장소
+
+      return uploadFileURL(uploadFilePath + '/' + fileName);
     } catch (e) {
       throw e;
     }

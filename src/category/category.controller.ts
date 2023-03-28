@@ -1,5 +1,6 @@
 import { JwtGuard } from './../auth/guard/jwt.guard';
 import {
+  Bind,
   Body,
   Controller,
   Delete,
