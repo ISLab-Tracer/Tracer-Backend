@@ -52,8 +52,8 @@ async function bootstrap() {
   app.use(json({ limit: '500mb' }));
   app.use(urlencoded({ limit: '500mb', extended: true }));
 
-  app.useStaticAssets(join(__dirname, '..', 'assets'), {
-    prefix: '/assets/',
+  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
+    prefix: '/uploads/',
   });
 
   dirList.forEach((item) => {

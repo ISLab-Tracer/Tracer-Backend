@@ -29,7 +29,6 @@ export class EquipmentController {
     file: Express.Multer.File,
     @Res() res: Response,
     @Body() equipmentInfo: CreateEquipmentDto
-    // @Req() req: Request
   ) {
     try {
       const result = await this.equipmentService.createEquipment(
@@ -42,6 +41,7 @@ export class EquipmentController {
         data: result,
       });
     } catch (e) {
+      console.log(e);
       return res.status(HttpStatus.BAD_REQUEST).json({
         status: HttpStatus.BAD_REQUEST,
         message: e.message,
