@@ -169,7 +169,7 @@ export class EquipmentService {
    * @param equipment_id
    * @returns
    */
-  async uploadFile(file: Express.Multer.File, equipment_id: string) {
+  uploadFile(file: Express.Multer.File, equipment_id: string) {
     try {
       const uploadFilePath = `uploads/equipment`;
 
