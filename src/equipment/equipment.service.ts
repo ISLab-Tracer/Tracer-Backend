@@ -78,7 +78,7 @@ export class EquipmentService {
   async getEquipmentList() {
     try {
       const equipList = await this.equipmentRepository.find({
-        relations: ['category', 'user'],
+        relations: ['category', 'user', 'project'],
       });
 
       const resultPromise = equipList.map(async (item) => {
