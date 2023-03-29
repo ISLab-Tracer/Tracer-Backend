@@ -1,15 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import path, { extname } from 'path';
+import { uploadFileURL } from 'src/config/multer.options';
 import { EntityBadRequestException } from 'src/config/service.exception';
 import { Equipment } from 'src/entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { CreateEquipmentDto, UpdateEquipmentDto } from './dto';
+import * as fs from 'fs';
+import { TeamService } from 'src/team/team.service';
 
 @Injectable()
 export class EquipmentService {
   constructor(
     @InjectRepository(Equipment)
-    private equipmentRepository: Repository<Equipment>
+    private equipmentRepository: Repository<Equipment>,
+    private teamService: TeamService,
+    private dataSource: DataSource
   ) {}
 
   /**
@@ -18,7 +24,14 @@ export class EquipmentService {
    * @param equipmentInfo
    * @returns
    */
-  async createEquipment(equipmentInfo: CreateEquipmentDto) {
+  async createEquipment(
+    equipmentInfo: CreateEquipmentDto,
+    file: Express.Multer.File
+  ) {
+    const queryRunner = this.dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
     try {
       if (equipmentInfo.equipment_id) {
         const { equipment_id } = equipmentInfo;
@@ -30,11 +43,30 @@ export class EquipmentService {
         }
       }
 
-      const test = this.equipmentRepository.create(equipmentInfo);
-      const result = await this.equipmentRepository.save(test);
+      const equipInfo = this.equipmentRepository.create(equipmentInfo);
+      let result = await queryRunner.manager.save(equipInfo);
+
+      // const result = await this.equipmentRepository.save(test);
+      const { equipment_id } = result;
+
+      const f = this.uploadFile(file, equipment_id);
+
+      if (f) {
+        const equipFileInfo = this.equipmentRepository.create({
+          ...result,
+          equipment_thumbnail: f,
+        });
+        result = await queryRunner.manager.save(equipFileInfo);
+      }
+
+      await queryRunner.commitTransaction();
+
       return result;
     } catch (e) {
+      await queryRunner.rollbackTransaction();
       throw e;
+    } finally {
+      await queryRunner.release();
     }
   }
 
@@ -45,7 +77,20 @@ export class EquipmentService {
    */
   async getEquipmentList() {
     try {
-      const result = await this.equipmentRepository.find();
+      const equipList = await this.equipmentRepository.find({
+        relations: ['category', 'user'],
+      });
+
+      const resultPromise = equipList.map(async (item) => {
+        const {
+          user: { team_id },
+        } = item;
+        const team = await this.teamService.getTeamInfo(team_id);
+        return { ...item, team };
+      });
+
+      const result = await Promise.all(resultPromise);
+
       return result;
     } catch (e) {
       throw e;
@@ -148,6 +193,32 @@ export class EquipmentService {
       await this.equipmentRepository.findOneOrFail({ where: { equipment_id } });
       const result = await this.equipmentRepository.delete({ equipment_id });
       return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
+   * 파일 업로드
+   * --
+   * @param file
+   * @param equipment_id
+   * @returns
+   */
+  uploadFile(file: Express.Multer.File, equipment_id: string) {
+    try {
+      const uploadFilePath = `uploads/equipment`;
+
+      //파일 이름
+      const fileName = `${equipment_id}.png`;
+      //파일 업로드 경로
+      const uploadPath =
+        __dirname + `/../../${uploadFilePath + '/' + fileName}`;
+
+      //파일 생성
+      fs.writeFileSync(uploadPath, file.buffer); // file.path 임시 파일 저장소
+
+      return uploadFileURL(uploadFilePath + '/' + fileName);
     } catch (e) {
       throw e;
     }

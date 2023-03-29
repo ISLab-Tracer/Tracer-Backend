@@ -79,7 +79,6 @@ export class AuthService {
       const result = await this.signupRepository.save(signup);
       return result;
     } catch (e) {
-      console.log(e);
       throw e;
     }
   }

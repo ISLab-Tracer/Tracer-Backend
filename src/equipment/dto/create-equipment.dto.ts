@@ -27,13 +27,11 @@ export class CreateEquipmentDto {
 
   @IsString()
   @IsOptional()
-  user_nequipment_thumbnailm?: string;
+  equipment_thumbnailm?: string;
 
-  @IsNumber()
   @IsOptional()
-  equipment_price?: number;
+  equipment_price?: any;
 
-  @IsNumber()
   @IsOptional()
-  equipment_qty?: number;
+  equipment_qty?: any;
 }

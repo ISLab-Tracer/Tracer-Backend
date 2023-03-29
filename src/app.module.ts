@@ -22,6 +22,8 @@ import { LocationModule } from './location/location.module';
 import { ServiceExceptionToHttpExceptionFilter } from './entity';
 import { APP_FILTER } from '@nestjs/core';
 import { ProjectMemberModule } from './project_member/project_member.module';
+import { CommonModule } from './common/common.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -63,6 +65,8 @@ import { ProjectMemberModule } from './project_member/project_member.module';
     TraceModule,
     LocationModule,
     ProjectMemberModule,
+    CommonModule,
+    UploadModule,
   ],
   controllers: [],
   providers: [
