@@ -27,7 +27,7 @@ export class CreateEquipmentDto {
 
   @IsString()
   @IsOptional()
-  equipment_thumbnailm?: string;
+  equipment_thumbnail?: string;
 
   @IsOptional()
   equipment_price?: any;

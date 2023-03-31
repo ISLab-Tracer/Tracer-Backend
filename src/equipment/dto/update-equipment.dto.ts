@@ -15,7 +15,7 @@ export class UpdateEquipmentDto {
 
   @IsString()
   @IsOptional()
-  user_nequipment_thumbnailm?: string;
+  equipment_thumbnail?: string;
 
   @IsNumber()
   @IsOptional()
