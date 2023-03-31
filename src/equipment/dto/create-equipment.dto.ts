@@ -34,4 +34,8 @@ export class CreateEquipmentDto {
 
   @IsOptional()
   equipment_qty?: any;
+
+  @IsString()
+  @IsOptional()
+  equipment_barcode?: string;
 }

@@ -24,4 +24,8 @@ export class UpdateEquipmentDto {
   @IsNumber()
   @IsOptional()
   equipment_qty?: number;
+
+  @IsString()
+  @IsOptional()
+  equipment_barcode?: string;
 }

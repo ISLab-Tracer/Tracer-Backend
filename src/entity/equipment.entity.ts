@@ -38,6 +38,9 @@ export class Equipment {
   @Column()
   equipment_qty: number;
 
+  @Column()
+  equipment_barcode: string;
+
   @CreateDateColumn()
   created_at: Date;
 
