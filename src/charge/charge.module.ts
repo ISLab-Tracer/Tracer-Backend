@@ -8,5 +8,6 @@ import { ChargeService } from './charge.service';
   imports: [TypeOrmModule.forFeature([Charge])],
   controllers: [ChargeController],
   providers: [ChargeService],
+  exports: [ChargeService],
 })
 export class ChargeModule {}

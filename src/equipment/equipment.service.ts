@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import path, { extname } from 'path';
 import { uploadFileURL } from 'src/config/multer.options';
 import { EntityBadRequestException } from 'src/config/service.exception';
 import { Equipment } from 'src/entity';
@@ -8,6 +7,7 @@ import { DataSource, Repository } from 'typeorm';
 import { CreateEquipmentDto, UpdateEquipmentDto } from './dto';
 import * as fs from 'fs';
 import { TeamService } from 'src/team/team.service';
+import { ChargeService } from 'src/charge/charge.service';
 
 @Injectable()
 export class EquipmentService {
@@ -15,6 +15,7 @@ export class EquipmentService {
     @InjectRepository(Equipment)
     private equipmentRepository: Repository<Equipment>,
     private teamService: TeamService,
+    private chargeService: ChargeService,
     private dataSource: DataSource
   ) {}
 
@@ -106,8 +107,20 @@ export class EquipmentService {
     try {
       const equipment = await this.equipmentRepository.findOneOrFail({
         where: { equipment_id },
+        relations: ['category', 'user', 'project'],
       });
-      return equipment;
+
+      const {
+        user: { team_id },
+      } = equipment;
+
+      const team = await this.teamService.getTeamInfo(team_id);
+
+      const charge = await this.chargeService.getChargeEquipmentInfo(
+        equipment_id
+      );
+
+      return { ...equipment, team, charge };
     } catch (e) {
       throw e;
     }
