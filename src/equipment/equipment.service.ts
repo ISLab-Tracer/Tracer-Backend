@@ -80,6 +80,7 @@ export class EquipmentService {
     try {
       const equipList = await this.equipmentRepository.find({
         relations: ['category', 'user', 'project'],
+        order: { created_at: 'DESC' },
       });
 
       const resultPromise = equipList.map(async (item) => {
