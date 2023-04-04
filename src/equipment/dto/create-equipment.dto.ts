@@ -27,11 +27,15 @@ export class CreateEquipmentDto {
 
   @IsString()
   @IsOptional()
-  equipment_thumbnailm?: string;
+  equipment_thumbnail?: string;
 
   @IsOptional()
   equipment_price?: any;
 
   @IsOptional()
   equipment_qty?: any;
+
+  @IsString()
+  @IsOptional()
+  equipment_barcode?: string;
 }
