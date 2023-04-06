@@ -96,6 +96,7 @@ export class ChargeService {
     try {
       const result = await this.chargeRepository.find({
         where: { equipment_id },
+        relations: ['user'],
       });
       return result;
     } catch (e) {

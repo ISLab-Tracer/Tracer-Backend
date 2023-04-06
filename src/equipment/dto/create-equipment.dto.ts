@@ -38,4 +38,8 @@ export class CreateEquipmentDto {
   @IsString()
   @IsOptional()
   equipment_barcode?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  charger_id: string;
 }

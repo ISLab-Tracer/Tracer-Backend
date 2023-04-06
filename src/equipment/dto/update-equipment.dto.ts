@@ -17,15 +17,21 @@ export class UpdateEquipmentDto {
   @IsOptional()
   equipment_thumbnail?: string;
 
-  @IsNumber()
   @IsOptional()
-  equipment_price?: number;
+  equipment_price?: any;
 
-  @IsNumber()
   @IsOptional()
-  equipment_qty?: number;
+  equipment_qty?: any;
 
   @IsString()
   @IsOptional()
   equipment_barcode?: string;
+
+  @IsString()
+  @IsOptional()
+  category_id?: string;
+
+  @IsString()
+  @IsOptional()
+  project_id?: string;
 }

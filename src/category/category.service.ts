@@ -45,7 +45,31 @@ export class CategoryService {
    */
   async getCategoryList() {
     try {
-      const result = await this.categoryRepository.find();
+      const result = await this.categoryRepository.find({
+        order: { category_level: 'ASC' },
+      });
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async getCatgoryTree() {
+    try {
+      const parent = await this.categoryRepository.find({
+        where: { category_level: 0 },
+        order: { category_order: 'ASC' },
+      });
+      const childPromise = parent.map(async (item) => {
+        const { category_id } = item;
+        const child = await this.categoryRepository.find({
+          where: { parent_id: category_id },
+          order: { category_order: 'ASC' },
+        });
+        return { ...item, child };
+      });
+      const result = await Promise.all(childPromise);
+
       return result;
     } catch (e) {
       throw e;

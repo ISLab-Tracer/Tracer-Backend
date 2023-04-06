@@ -18,6 +18,10 @@ export class UpdateCategoryDto {
   category_desc?: string;
 
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   category_level?: number;
+
+  @IsNumber()
+  @IsOptional()
+  category_order?: number;
 }

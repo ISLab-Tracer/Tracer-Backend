@@ -24,8 +24,9 @@ export class CommonService {
       const projectList = await this.projectService.getProjectList();
       const teamList = await this.teamService.getTeamList();
       const userList = await this.userService.getUserList();
+      const categoryTree = await this.categoryService.getCatgoryTree();
 
-      return { categoryList, projectList, teamList, userList };
+      return { categoryList, projectList, teamList, userList, categoryTree };
     } catch (e) {
       throw e;
     }

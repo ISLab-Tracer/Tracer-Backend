@@ -25,6 +25,9 @@ export class Category {
   @Column({ default: 0 })
   category_level: number;
 
+  @Column({ default: 0 })
+  category_order: number;
+
   @CreateDateColumn()
   created_at: Date;
 
