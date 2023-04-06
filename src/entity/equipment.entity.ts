@@ -1,4 +1,4 @@
-import { Category, Project, User } from 'src/entity';
+import { Category, Project, Trace, User } from 'src/entity';
 import {
   Column,
   CreateDateColumn,

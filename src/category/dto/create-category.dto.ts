@@ -19,5 +19,9 @@ export class CreateCategoryDto {
 
   @IsNumber()
   @IsOptional()
-  category_level: number;
+  category_level?: number;
+
+  @IsNumber()
+  @IsOptional()
+  category_order?: number;
 }

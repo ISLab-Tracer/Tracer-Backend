@@ -23,8 +23,8 @@ export class UploadController {
   @UseInterceptors(FileInterceptor('file', multerMemoryOptions))
   @Bind(UploadedFile())
   async singleUpload(
-    @Res() res: Response,
     file: Express.Multer.File,
+    @Res() res: Response,
     @Body() uploadDto: UploadDto
   ) {
     try {

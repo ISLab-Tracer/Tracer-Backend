@@ -2,18 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { uploadFileURL } from 'src/config/multer.options';
 import { EntityBadRequestException } from 'src/config/service.exception';
-import { Equipment } from 'src/entity';
+import { Charge, Equipment } from 'src/entity';
 import { DataSource, Repository } from 'typeorm';
 import { CreateEquipmentDto, UpdateEquipmentDto } from './dto';
 import * as fs from 'fs';
 import { TeamService } from 'src/team/team.service';
 import { ChargeService } from 'src/charge/charge.service';
+import { CreateChargeDto } from 'src/charge/dto';
 
 @Injectable()
 export class EquipmentService {
   constructor(
     @InjectRepository(Equipment)
     private equipmentRepository: Repository<Equipment>,
+    @InjectRepository(Charge)
+    private chargeRepository: Repository<Charge>,
     private teamService: TeamService,
     private chargeService: ChargeService,
     private dataSource: DataSource
@@ -29,11 +32,13 @@ export class EquipmentService {
     equipmentInfo: CreateEquipmentDto,
     file: Express.Multer.File
   ) {
+    // 트랜잭션을 위한 queryRunner 생성
     const queryRunner = this.dataSource.createQueryRunner();
-
     await queryRunner.connect();
+    // 트랜잭션 시작
     await queryRunner.startTransaction();
     try {
+      //  equipment_id 중복 검사
       if (equipmentInfo.equipment_id) {
         const { equipment_id } = equipmentInfo;
         const check = await this.equipmentRepository.findOne({
@@ -44,12 +49,13 @@ export class EquipmentService {
         }
       }
 
+      // equipment 컬럼 생성
       const equipInfo = this.equipmentRepository.create(equipmentInfo);
       let result = await queryRunner.manager.save(equipInfo);
 
-      // const result = await this.equipmentRepository.save(test);
       const { equipment_id } = result;
 
+      // 이미지 파일 업로드
       const f = this.uploadFile(file, equipment_id);
 
       if (f) {
@@ -60,9 +66,19 @@ export class EquipmentService {
         result = await queryRunner.manager.save(equipFileInfo);
       }
 
+      // 담당자 정보 등록
+      const { charger_id } = equipmentInfo;
+      const chargerInfo: CreateChargeDto = {
+        user_id: charger_id,
+        equipment_id,
+        charge_status: true,
+      };
+      const _charger = this.chargeRepository.create(chargerInfo);
+      const charger = await queryRunner.manager.save(_charger);
+
       await queryRunner.commitTransaction();
 
-      return result;
+      return { ...result, charger };
     } catch (e) {
       await queryRunner.rollbackTransaction();
       throw e;
@@ -86,9 +102,13 @@ export class EquipmentService {
       const resultPromise = equipList.map(async (item) => {
         const {
           user: { team_id },
+          equipment_id,
         } = item;
         const team = await this.teamService.getTeamInfo(team_id);
-        return { ...item, team };
+        const charge = await this.chargeService.getChargeEquipmentInfo(
+          equipment_id
+        );
+        return { ...item, team, charge };
       });
 
       const result = await Promise.all(resultPromise);
